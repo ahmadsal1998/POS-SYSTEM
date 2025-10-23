@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import { NavItem, MetricCardProps, QuickActionProps, TopNavItem } from './types';
 
@@ -341,6 +339,7 @@ export const AR_LABELS = {
   received: 'تم الاستلام',
   pending: 'قيد الانتظار',
   cancelled: 'ملغى',
+  completed: 'مكتمل',
   bankTransfer: 'تحويل بنكي',
   addNewPurchase: 'إضافة شراء جديد',
   purchaseDetails: 'تفاصيل الشراء',
@@ -353,6 +352,26 @@ export const AR_LABELS = {
   selectSupplier: 'اختر مورد...',
   addNewSupplier: 'إضافة مورد جديد',
   searchByPOorSupplier: 'ابحث برقم الطلب أو اسم المورد...',
+  cheque: 'شيك',
+  chequeNumber: 'رقم الشيك',
+  chequeAmount: 'مبلغ الشيك',
+  chequeDueDate: 'تاريخ استحقاق الشيك',
+  bankName: 'اسم البنك',
+  chequeNotes: 'ملاحظات الشيك',
+  addPayment: 'إضافة دفعة',
+  supplierPayment: 'دفعة للمورد',
+  paymentAmount: 'مبلغ الدفعة',
+  paymentDate: 'تاريخ الدفعة',
+  supplierDetails: 'تفاصيل المورد',
+  filterBySupplier: 'تصفية حسب المورد',
+  allSuppliers: 'كل الموردين',
+  totalPurchases: 'إجمالي المشتريات',
+  totalPaid: 'إجمالي المدفوعات',
+  remainingBalance: 'الرصيد المتبقي',
+  supplierOwesYou: 'المورد مدين لك',
+  youOweSupplier: 'أنت مدين للمورد',
+  supplierBalance: 'رصيد المورد',
+
 
   // Expenses Page Specific
   expenses: 'المصروفات',
@@ -368,6 +387,18 @@ export const AR_LABELS = {
   unpaid: 'غير مدفوع',
   searchByExpenseDetails: 'ابحث بالرقم، الفئة، أو المسؤول...',
   expenseDetails: 'تفاصيل المصروف',
+  
+  // Cheques Page Specific
+  cheques: 'الشيكات',
+  chequeManagement: 'إدارة الشيكات',
+  chequeManagementDescription: 'عرض وتتبع حالة جميع الشيكات الصادرة.',
+  chequeCalendar: 'تقويم الشيكات',
+  chequeStatus: 'حالة الشيك',
+  changeStatus: 'تغيير الحالة',
+  cleared: 'تم الصرف',
+  bounced: 'مرتجع',
+  chequeDetails: 'تفاصيل الشيك',
+
 
   // Other
   gridView: 'عرض شبكي',
@@ -384,6 +415,7 @@ const RefundsIcon = () => <svg className="h-5 w-5" fill="none" viewBox="0 0 24 2
 const PreferencesIcon = () => <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.58-.354 1.25-.566 1.956-.566z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>;
 const PurchasesIcon = () => <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" /></svg>;
 const ExpensesIcon = () => <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>;
+const ChequesIcon = () => <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>;
 
 
 // Dashboard metric icons
@@ -434,6 +466,7 @@ const HandIcon = () => <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" 
 const SunIcon = () => <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>;
 const MoonIcon = () => <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>;
 
+const AddPaymentIcon = () => <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" /><path d="M19 8v6M22 11h-6" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"/></svg>;
 
 // Modified ChevronDownIcon to accept className prop
 // FIX: Explicitly add className to ChevronDownIconProps to resolve typing issue.
@@ -471,39 +504,39 @@ export const NAV_ITEMS: NavItem[] = [
     ],
   },
   { id: 3, label: AR_LABELS.purchases, icon: <PurchasesIcon />, path: '/purchases' },
-  { id: 4, label: AR_LABELS.expenses, icon: <ExpensesIcon />, path: '/expenses' },
+  { id: 4, label: AR_LABELS.cheques, icon: <ChequesIcon />, path: '/cheques' },
+  { id: 5, label: AR_LABELS.expenses, icon: <ExpensesIcon />, path: '/expenses' },
   {
-    id: 5,
+    id: 6,
     label: AR_LABELS.sales,
     icon: <SalesIcon />,
     path: '#', // Set path to '#' to prevent navigation
     isDropdown: true,
     dropdownItems: [
-      { id: 51, label: AR_LABELS.salesToday, icon: <span className="w-2 h-2 rounded-full bg-gray-500 block"></span>, path: '/sales/today' },
-      { id: 52, label: AR_LABELS.salesHistory, icon: <span className="w-2 h-2 rounded-full bg-gray-500 block"></span>, path: '/sales/history' },
+      { id: 61, label: AR_LABELS.salesToday, icon: <span className="w-2 h-2 rounded-full bg-gray-500 block"></span>, path: '/sales/today' },
+      { id: 62, label: AR_LABELS.salesHistory, icon: <span className="w-2 h-2 rounded-full bg-gray-500 block"></span>, path: '/sales/history' },
     ],
   },
   {
-    id: 6,
+    id: 7,
     label: AR_LABELS.pointOfSales,
     icon: <POSIcon />,
     path: '/pos/1',
     isDropdown: true,
     dropdownItems: [
-      { id: 61, label: 'نقطة بيع ١ (Retail)', icon: <span className="w-2 h-2 rounded-full bg-gray-500 block"></span>, path: '/pos/1' },
-      { id: 62, label: 'نقطة بيع ٢ (Wholesale)', icon: <span className="w-2 h-2 rounded-full bg-gray-500 block"></span>, path: '/pos/2' },
+      { id: 71, label: 'نقطة بيع ١ (Retail)', icon: <span className="w-2 h-2 rounded-full bg-gray-500 block"></span>, path: '/pos/1' },
+      { id: 72, label: 'نقطة بيع ٢ (Wholesale)', icon: <span className="w-2 h-2 rounded-full bg-gray-500 block"></span>, path: '/pos/2' },
     ],
   },
-  { id: 7, label: AR_LABELS.refunds, icon: <RefundsIcon />, path: '/refunds' },
   {
-    id: 8,
+    id: 9,
     label: AR_LABELS.settings,
     icon: <PreferencesIcon />,
     path: '#',
     isDropdown: true,
     dropdownItems: [
-        { id: 81, label: AR_LABELS.preferences, icon: <span className="w-2 h-2 rounded-full bg-gray-500 block"></span>, path: '/preferences' },
-        { id: 82, label: AR_LABELS.userManagement, icon: <span className="w-2 h-2 rounded-full bg-gray-500 block"></span>, path: '/users' },
+        { id: 91, label: AR_LABELS.preferences, icon: <span className="w-2 h-2 rounded-full bg-gray-500 block"></span>, path: '/preferences' },
+        { id: 92, label: AR_LABELS.userManagement, icon: <span className="w-2 h-2 rounded-full bg-gray-500 block"></span>, path: '/users' },
     ],
   },
 ];
@@ -581,4 +614,4 @@ export const ToggleSwitch: React.FC<{
 };
 
 
-export { ChevronDownIcon, AddProductIcon, EditIcon, DeleteIcon, CancelIcon, GenerateBarcodeIcon, PlusIcon, MinusIcon, PrintIcon, ViewIcon, SearchIcon, ImportIcon, ExportIcon, GridViewIcon, TableViewIcon, CashIcon, CreditCardIcon, HandIcon, MenuIcon, XIcon, UsersIcon, PurchasesIcon, ExpensesIcon, SunIcon, MoonIcon };
+export { ChevronDownIcon, AddProductIcon, EditIcon, DeleteIcon, CancelIcon, GenerateBarcodeIcon, PlusIcon, MinusIcon, PrintIcon, ViewIcon, SearchIcon, ImportIcon, ExportIcon, GridViewIcon, TableViewIcon, CashIcon, CreditCardIcon, HandIcon, MenuIcon, XIcon, UsersIcon, PurchasesIcon, ExpensesIcon, ChequesIcon, SunIcon, MoonIcon, AddPaymentIcon };

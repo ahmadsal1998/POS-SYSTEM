@@ -287,6 +287,7 @@ export interface Supplier {
   contactPerson?: string;
   phone: string;
   address?: string;
+  notes?: string;
   previousBalance: number;
 }
 
@@ -301,8 +302,19 @@ export interface PurchaseItem {
   quantityReceived?: number; // For tracking received stock
 }
 
-export type PurchaseStatus = 'Pending' | 'Received' | 'Partially Received' | 'Cancelled';
-export type PurchasePaymentMethod = 'Cash' | 'Bank Transfer' | 'Credit';
+export type PurchaseStatus = 'Pending' | 'Completed' | 'Cancelled';
+export type PurchasePaymentMethod = 'Cash' | 'Bank Transfer' | 'Credit' | 'Cheque';
+export type ChequeStatus = 'Pending' | 'Cleared' | 'Bounced';
+
+
+export interface ChequeDetails {
+  chequeNumber?: string;
+  chequeAmount: number;
+  chequeDueDate: string; // ISO Date String
+  bankName?: string;
+  notes?: string;
+  status: ChequeStatus;
+}
 
 export interface PurchaseOrder {
   id: string; // PO Number
@@ -310,14 +322,27 @@ export interface PurchaseOrder {
   supplierName: string;
   items: PurchaseItem[];
   subtotal: number;
-  tax: number;
+  tax: number; // Stored as a percentage
   discount: number;
   totalAmount: number;
   status: PurchaseStatus;
   purchaseDate: string; // ISO Date String
   paymentMethod: PurchasePaymentMethod;
+  chequeDetails?: ChequeDetails;
   notes?: string;
 }
+
+export interface SupplierPayment {
+    id: string;
+    supplierId: string;
+    purchaseId?: string;
+    amount: number;
+    method: 'Cash' | 'Bank Transfer' | 'Cheque';
+    date: string; // ISO Date String
+    notes?: string;
+    chequeDetails?: ChequeDetails;
+}
+
 
 // --- EXPENSES INTERFACES ---
 export type ExpenseCategory = 'Salaries' | 'Maintenance' | 'Operations' | 'Marketing' | 'Rent' | 'Utilities' | 'Other';

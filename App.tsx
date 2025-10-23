@@ -15,6 +15,7 @@ import PreferencesPage from './components/PreferencesPage'; // Import the new Pr
 import UserManagementPage from './components/UserManagementPage'; // Import the new User Management page
 import PurchasesPage from './components/PurchasesPage'; // Import the new Purchases page
 import ExpensesPage from './components/ExpensesPage'; // Import the new Expenses page
+import ChequesPage from './components/ChequesPage'; // Import the new Cheques page
 
 export type Theme = 'light' | 'dark';
 
@@ -46,6 +47,9 @@ const App: React.FC = () => {
     }
     if (activePath === '/purchases') {
       return <PurchasesPage />;
+    }
+    if (activePath === '/cheques') {
+      return <ChequesPage />;
     }
     if (activePath === '/expenses') {
       return <ExpensesPage />;
