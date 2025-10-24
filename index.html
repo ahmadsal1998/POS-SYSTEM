@@ -21,6 +21,32 @@
       ::-webkit-scrollbar-thumb:hover {
         background: #ea580c; /* Color of the scroll thumb on hover */
       }
+
+      /* Print-specific styles for the receipt modal */
+      @media print {
+        body * {
+          visibility: hidden;
+        }
+        #printable-receipt, #printable-receipt * {
+          visibility: visible;
+        }
+        #printable-receipt {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          margin: 0;
+          padding: 1.5rem;
+          font-size: 12px;
+          color: black;
+        }
+        .print-hidden {
+          display: none !important;
+        }
+        .print-only-text {
+            visibility: visible !important;
+        }
+      }
     </style>
 <script type="importmap">
 {

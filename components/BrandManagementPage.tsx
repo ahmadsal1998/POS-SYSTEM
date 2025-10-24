@@ -159,12 +159,6 @@ const BrandManagementPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{AR_LABELS.brandManagement}</h1>
-        <p className="text-gray-600 dark:text-gray-400">{AR_LABELS.brandManagementDescription}</p>
-      </div>
-
       {/* Toolbar */}
       <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">

@@ -2,12 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import Dashboard from './components/Dashboard';
-import ProductPage from './components/ProductPage';
+import ProductManagementPage from './components/ProductManagementPage'; // Import the new unified product page
 import AddMultiUnitProductPage from './components/AddMultiUnitProductPage'; // Import the new multi-unit product page
-import SalesTodayPage from './components/SalesTodayPage';
-import SalesHistoryPage from './components/SalesHistoryPage';
-import CategoryManagementPage from './components/CategoryManagementPage';
-import BrandManagementPage from './components/BrandManagementPage';
+import SalesPage from './components/SalesPage'; // Import the new unified sales page
 import POSPage from './components/POSPage'; // Import the new POS page
 import WholesalePOSPage from './components/WholesalePOSPage'; // Import the new Wholesale POS page
 import RefundsPage from './components/RefundsPage'; // Import the new Refunds page
@@ -34,16 +31,10 @@ const App: React.FC = () => {
       return <Dashboard />;
     }
     if (activePath === '/products') {
-      return <ProductPage setActivePath={setActivePath} />;
+      return <ProductManagementPage setActivePath={setActivePath} />;
     }
     if (activePath === '/products/add-multi-unit') {
       return <AddMultiUnitProductPage setActivePath={setActivePath} />;
-    }
-    if (activePath === '/categories') {
-      return <CategoryManagementPage />;
-    }
-    if (activePath === '/brands') {
-      return <BrandManagementPage />;
     }
     if (activePath === '/purchases') {
       return <PurchasesPage />;
@@ -54,11 +45,8 @@ const App: React.FC = () => {
     if (activePath === '/expenses') {
       return <ExpensesPage />;
     }
-    if (activePath === '/sales/today') {
-      return <SalesTodayPage />;
-    }
-    if (activePath === '/sales/history') {
-      return <SalesHistoryPage />;
+    if (activePath === '/sales') {
+      return <SalesPage setActivePath={setActivePath} />;
     }
     if (activePath === '/refunds') {
       return <RefundsPage />;

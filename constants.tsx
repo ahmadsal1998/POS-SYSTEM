@@ -60,6 +60,8 @@ export const AR_LABELS = {
   ahmadSai: 'أحمد صالح',
 
   // Product Page specific
+  productManagement: 'إدارة المنتجات',
+  productManagementDescription: 'عرض وإدارة المنتجات والفئات والعلامات التجارية.',
   productListing: 'قائمة المنتجات',
   productListingDescription: 'إدارة المنتجات المتوفرة في المخزون',
   addNewProduct: 'إضافة منتج جديد',
@@ -79,6 +81,9 @@ export const AR_LABELS = {
   expired: 'منتهي الصلاحية',
   newlyAdded: 'أضيف حديثاً',
   expiryDate: 'تاريخ الانتهاء',
+  numberOfCategories: 'عدد الفئات',
+  numberOfBrands: 'عدد العلامات التجارية',
+
 
   // Multi-unit product specific labels (updated for dynamic units)
   multiUnitProduct: 'منتج متعدد الوحدات',
@@ -124,6 +129,52 @@ export const AR_LABELS = {
   noSalesFound: 'لم يتم العثور على مبيعات تطابق الفلاتر.',
   noSalesToday: 'لا توجد مبيعات مسجلة لليوم حتى الآن.',
   
+  // New Sales Management Page Specific
+  salesManagement: 'إدارة المبيعات',
+  salesManagementDescription: 'عرض وتصفية وتصدير جميع معاملات البيع.',
+  viewAllSales: 'عرض كل المبيعات',
+  salesReports: 'تقارير المبيعات',
+  customerAccounts: 'حسابات العملاء',
+  searchByCustomerOrInvoice: 'ابحث بالعميل، الفاتورة، أو الهاتف...',
+  paymentType: 'نوع الدفع',
+  seller: 'البائع',
+  paid: 'مدفوع',
+  remaining: 'المتبقي',
+  partial: 'جزئي',
+  due: 'مستحق',
+  totalSalesToday: 'إجمالي مبيعات اليوم',
+  totalPayments: 'إجمالي المدفوعات',
+  creditSales: 'مبيعات آجلة',
+  invoiceCount: 'عدد الفواتير',
+  collectionRate: 'نسبة التحصيل',
+  generateReport: 'إنشاء تقرير',
+  reportType: 'نوع التقرير',
+  totalSalesReport: 'تقرير إجمالي المبيعات',
+  salesByCustomerReport: 'تقرير المبيعات حسب العميل',
+  salesByUserReport: 'تقرير المبيعات حسب المستخدم',
+  salesByPaymentTypeReport: 'تقرير المبيعات حسب نوع الدفع',
+  exportExcel: 'تصدير Excel',
+  exportPDF: 'تصدير PDF',
+  printReport: 'طباعة التقرير',
+  lastPayment: 'آخر دفعة',
+  dueAmount: 'المبلغ المستحق',
+  amountPaid: 'المبلغ المدفوع',
+  notes: 'ملاحظات',
+
+  // Customer Accounts Specific
+  searchByCustomerNameOrPhone: 'ابحث بالاسم أو رقم الهاتف...',
+  allCustomers: 'كل العملاء',
+  hasBalance: 'عليه رصيد',
+  noBalance: 'ليس عليه رصيد',
+  customerStatement: 'كشف حساب العميل',
+  transactionHistory: 'سجل الحركات',
+  debit: 'مدين',
+  credit: 'دائن',
+  balance: 'الرصيد',
+  invoice: 'فاتورة',
+  paymentReceived: 'دفعة مستلمة',
+
+
   // Category Management Page Specific (Updated)
   categoryManagement: 'إدارة الفئات',
   categoryManagementDescription: 'تنظيم فئات المنتجات الرئيسية والفرعية.',
@@ -186,7 +237,7 @@ export const AR_LABELS = {
   payNow: 'الدفع الآن',
   cash: 'نقدي',
   card: 'بطاقة',
-  credit: 'آجل',
+  // credit: 'آجل', // 'credit' key is duplicated. Using the one from Purchases section.
   visa: 'فيزا',
   payment: 'الدفع',
   amountReceived: 'المبلغ المستلم',
@@ -217,9 +268,11 @@ export const AR_LABELS = {
   addToCart: 'أضف للسلة',
   availableStock: 'المخزون المتوفر',
   checkout: 'الدفع',
-  customerDetails: 'تفاصيل العميل',
+  // customerDetails: 'تفاصيل العميل', // 'customerDetails' key is duplicated. Using the one from Purchases section.
   noCustomerSelected: 'لم يتم اختيار عميل',
   orderSummary: 'ملخص الطلب',
+  // FIX: Add 'customerDetails' to resolve type error in WholesalePOSPage.tsx
+  customerDetails: 'تفاصيل العميل',
 
   // Refunds Page Specific
   refundsManagement: 'إدارة المبالغ المستردة',
@@ -363,10 +416,13 @@ export const AR_LABELS = {
   paymentAmount: 'مبلغ الدفعة',
   paymentDate: 'تاريخ الدفعة',
   supplierDetails: 'تفاصيل المورد',
+  contactPerson: 'الشخص المسؤول',
+  email: 'البريد الإلكتروني',
   filterBySupplier: 'تصفية حسب المورد',
   allSuppliers: 'كل الموردين',
   totalPurchases: 'إجمالي المشتريات',
-  totalPaid: 'إجمالي المدفوعات',
+  // totalPaid: 'إجمالي المدفوعات', // FIX: Renamed to avoid duplicate key.
+  supplierTotalPaid: 'إجمالي المدفوعات',
   remainingBalance: 'الرصيد المتبقي',
   supplierOwesYou: 'المورد مدين لك',
   youOweSupplier: 'أنت مدين للمورد',
@@ -383,7 +439,6 @@ export const AR_LABELS = {
   responsiblePerson: 'الموظف / القسم المسؤول',
   // FIX: Add missing 'amount' label to fix type error in ExpensesPage.tsx
   amount: 'المبلغ',
-  paid: 'مدفوع',
   unpaid: 'غير مدفوع',
   searchByExpenseDetails: 'ابحث بالرقم، الفئة، أو المسؤول...',
   expenseDetails: 'تفاصيل المصروف',
@@ -397,6 +452,8 @@ export const AR_LABELS = {
   changeStatus: 'تغيير الحالة',
   cleared: 'تم الصرف',
   bounced: 'مرتجع',
+  // chequeDetails: 'تفاصيل الشيك', // 'chequeDetails' is a duplicate key. Using the one from the Purchases section.
+  // FIX: Add 'chequeDetails' to resolve type errors in PurchasesPage.tsx and ChequesPage.tsx
   chequeDetails: 'تفاصيل الشيك',
 
 
@@ -491,32 +548,11 @@ const XIcon = ({ className, ...props }: IconProps) => (
 
 export const NAV_ITEMS: NavItem[] = [
   { id: 1, label: AR_LABELS.dashboard, icon: <DashboardIcon />, path: '/' },
-  {
-    id: 2,
-    label: AR_LABELS.products,
-    icon: <ProductsIcon />,
-    path: '/products',
-    isDropdown: true,
-    dropdownItems: [
-      { id: 21, label: AR_LABELS.productListing, icon: <span className="w-2 h-2 rounded-full bg-gray-500 block"></span>, path: '/products' },
-      { id: 22, label: AR_LABELS.categoryManagement, icon: <CategoryIcon />, path: '/categories' },
-      { id: 24, label: AR_LABELS.brands, icon: <span className="w-2 h-2 rounded-full bg-gray-500 block"></span>, path: '/brands' },
-    ],
-  },
+  { id: 2, label: AR_LABELS.products, icon: <ProductsIcon />, path: '/products' },
   { id: 3, label: AR_LABELS.purchases, icon: <PurchasesIcon />, path: '/purchases' },
   { id: 4, label: AR_LABELS.cheques, icon: <ChequesIcon />, path: '/cheques' },
   { id: 5, label: AR_LABELS.expenses, icon: <ExpensesIcon />, path: '/expenses' },
-  {
-    id: 6,
-    label: AR_LABELS.sales,
-    icon: <SalesIcon />,
-    path: '#', // Set path to '#' to prevent navigation
-    isDropdown: true,
-    dropdownItems: [
-      { id: 61, label: AR_LABELS.salesToday, icon: <span className="w-2 h-2 rounded-full bg-gray-500 block"></span>, path: '/sales/today' },
-      { id: 62, label: AR_LABELS.salesHistory, icon: <span className="w-2 h-2 rounded-full bg-gray-500 block"></span>, path: '/sales/history' },
-    ],
-  },
+  { id: 6, label: AR_LABELS.sales, icon: <SalesIcon />, path: '/sales' },
   {
     id: 7,
     label: AR_LABELS.pointOfSales,

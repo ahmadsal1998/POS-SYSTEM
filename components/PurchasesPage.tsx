@@ -106,7 +106,9 @@ const SupplierFormModal: React.FC<{
     onSave: (newSupplier: Supplier) => void;
 }> = ({ isOpen, onClose, onSave }) => {
     const [name, setName] = useState('');
+    const [contactPerson, setContactPerson] = useState('');
     const [phone, setPhone] = useState('');
+    const [email, setEmail] = useState('');
     const [address, setAddress] = useState('');
     const [notes, setNotes] = useState('');
 
@@ -117,10 +119,20 @@ const SupplierFormModal: React.FC<{
         }
         onSave({
             id: UUID(),
-            name, phone, address, notes,
+            name, 
+            contactPerson,
+            phone,
+            email,
+            address, 
+            notes,
             previousBalance: 0,
         });
-        setName(''); setPhone(''); setAddress(''); setNotes('');
+        setName('');
+        setContactPerson('');
+        setPhone('');
+        setEmail('');
+        setAddress('');
+        setNotes('');
     };
 
     if (!isOpen) return null;
@@ -130,7 +142,9 @@ const SupplierFormModal: React.FC<{
                 <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">{AR_LABELS.addNewSupplier}</h2>
                 <div className="space-y-4">
                     <input type="text" placeholder={AR_LABELS.supplier} value={name} onChange={e => setName(e.target.value)} className="w-full border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 rounded-md shadow-sm"/>
+                    <input type="text" placeholder={AR_LABELS.contactPerson} value={contactPerson} onChange={e => setContactPerson(e.target.value)} className="w-full border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 rounded-md shadow-sm"/>
                     <input type="text" placeholder={AR_LABELS.phone} value={phone} onChange={e => setPhone(e.target.value)} className="w-full border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 rounded-md shadow-sm"/>
+                    <input type="email" placeholder={AR_LABELS.email} value={email} onChange={e => setEmail(e.target.value)} className="w-full border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 rounded-md shadow-sm"/>
                     <textarea placeholder={AR_LABELS.address} value={address} onChange={e => setAddress(e.target.value)} className="w-full border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 rounded-md shadow-sm"/>
                     <textarea placeholder="ملاحظات" value={notes} onChange={e => setNotes(e.target.value)} className="w-full border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 rounded-md shadow-sm"/>
                 </div>
@@ -463,7 +477,8 @@ const PurchasesPage: React.FC = () => {
             {supplierSummary && (
                 <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm grid grid-cols-1 md:grid-cols-4 gap-4 text-center items-center">
                     <div><p className="text-sm text-gray-500 dark:text-gray-400">{AR_LABELS.totalPurchases}</p><p className="text-xl font-bold text-blue-600 dark:text-blue-400">{supplierSummary.totalPurchases.toLocaleString('ar-SA', {style: 'currency', currency: 'SAR'})}</p></div>
-                    <div><p className="text-sm text-gray-500 dark:text-gray-400">{AR_LABELS.totalPaid}</p><p className="text-xl font-bold text-green-600 dark:text-green-400">{supplierSummary.totalPaid.toLocaleString('ar-SA', {style: 'currency', currency: 'SAR'})}</p></div>
+                    {/* FIX: Replaced AR_LABELS.totalPaid with AR_LABELS.supplierTotalPaid to resolve type error. */}
+                    <div><p className="text-sm text-gray-500 dark:text-gray-400">{AR_LABELS.supplierTotalPaid}</p><p className="text-xl font-bold text-green-600 dark:text-green-400">{supplierSummary.totalPaid.toLocaleString('ar-SA', {style: 'currency', currency: 'SAR'})}</p></div>
                     <div><p className="text-sm text-gray-500 dark:text-gray-400">{AR_LABELS.remainingBalance}</p><p className={`text-xl font-bold ${supplierSummary.balance >= 0 ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`}>{Math.abs(supplierSummary.balance).toLocaleString('ar-SA', {style: 'currency', currency: 'SAR'})} <span className="text-xs">{supplierSummary.balance >= 0 ? AR_LABELS.youOweSupplier : AR_LABELS.supplierOwesYou}</span></p></div>
                     <div>
                         <button

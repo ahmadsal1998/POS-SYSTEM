@@ -3,16 +3,16 @@ import { AR_LABELS, PrintIcon, ViewIcon } from '../constants';
 import { SaleTransaction } from '../types';
 
 // Mock data for historical sales
-// FIX: Removed unnecessary array spreads (`...[]`) which caused TypeScript to widen the type of `paymentMethod` to `string` instead of the required union type. This resolves the type incompatibility with `SaleTransaction`.
+// FIX: Corrected mock data to match the SaleTransaction interface and use valid enum values.
 const mockHistoricalSales: SaleTransaction[] = [
   // Today
-  { id: 'ORD-240721-001', date: new Date(new Date().setHours(9, 15, 0)).toISOString(), customerName: 'علي محمد', totalAmount: 150.75, paymentMethod: 'Card', status: 'Paid' },
-  { id: 'ORD-240721-002', date: new Date(new Date().setHours(10, 30, 0)).toISOString(), customerName: 'فاطمة الزهراء', totalAmount: 85.00, paymentMethod: 'Cash', status: 'Paid' },
+  { id: 'ORD-240721-001', date: new Date(new Date().setHours(9, 15, 0)).toISOString(), customerId: 'CUST-001', customerName: 'علي محمد', totalAmount: 150.75, paidAmount: 150.75, remainingAmount: 0, paymentMethod: 'Card', status: 'Paid', seller: 'أحمد صالح', items: [], subtotal: 131.09, totalItemDiscount: 0, invoiceDiscount: 0, tax: 19.66 },
+  { id: 'ORD-240721-002', date: new Date(new Date().setHours(10, 30, 0)).toISOString(), customerId: 'CUST-002', customerName: 'فاطمة الزهراء', totalAmount: 85.00, paidAmount: 85.00, remainingAmount: 0, paymentMethod: 'Cash', status: 'Paid', seller: 'أحمد صالح', items: [], subtotal: 73.91, totalItemDiscount: 0, invoiceDiscount: 0, tax: 11.09 },
   // Yesterday
-  { id: 'ORD-240720-001', date: new Date(new Date().setDate(new Date().getDate() - 1)).toISOString(), customerName: 'أحمد حسن', totalAmount: 300.00, paymentMethod: 'Online', status: 'Paid' },
-  { id: 'ORD-240720-002', date: new Date(new Date().setDate(new Date().getDate() - 1)).toISOString(), customerName: 'ليلى خالد', totalAmount: 55.50, paymentMethod: 'Cash', status: 'Refunded' },
+  { id: 'ORD-240720-001', date: new Date(new Date().setDate(new Date().getDate() - 1)).toISOString(), customerId: 'CUST-005', customerName: 'أحمد حسن', totalAmount: 300.00, paidAmount: 300.00, remainingAmount: 0, paymentMethod: 'Card', status: 'Paid', seller: 'أحمد صالح', items: [], subtotal: 260.87, totalItemDiscount: 0, invoiceDiscount: 0, tax: 39.13 },
+  { id: 'ORD-240720-002', date: new Date(new Date().setDate(new Date().getDate() - 1)).toISOString(), customerId: 'CUST-006', customerName: 'ليلى خالد', totalAmount: 55.50, paidAmount: 0, remainingAmount: 55.50, paymentMethod: 'Cash', status: 'Due', seller: 'أحمد صالح', items: [], subtotal: 48.26, totalItemDiscount: 0, invoiceDiscount: 0, tax: 7.24 },
   // Last Week
-  { id: 'ORD-240715-001', date: new Date(new Date().setDate(new Date().getDate() - 6)).toISOString(), customerName: 'يوسف محمود', totalAmount: 450.25, paymentMethod: 'Card', status: 'Paid' },
+  { id: 'ORD-240715-001', date: new Date(new Date().setDate(new Date().getDate() - 6)).toISOString(), customerId: 'CUST-007', customerName: 'يوسف محمود', totalAmount: 450.25, paidAmount: 400, remainingAmount: 50.25, paymentMethod: 'Card', status: 'Partial', seller: 'أحمد صالح', items: [], subtotal: 391.52, totalItemDiscount: 0, invoiceDiscount: 0, tax: 58.73 },
 ];
 
 const SalesHistoryPage: React.FC = () => {
@@ -101,9 +101,10 @@ const SalesHistoryPage: React.FC = () => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">{sale.totalAmount.toFixed(2)} ر.س</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">{sale.paymentMethod}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
+                    {/* FIX: Replaced invalid status check for 'Pending' with 'Partial' to align with SaleStatus type. */}
                     <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                       sale.status === 'Paid' ? 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300' :
-                      sale.status === 'Pending' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300' : 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300'
+                      sale.status === 'Partial' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300' : 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300'
                     }`}>
                       {sale.status}
                     </span>

@@ -11,11 +11,12 @@ const AvgValueIcon = () => <svg className="h-6 w-6" fill="none" viewBox="0 0 24 
 
 // Mock data for today's sales
 const today = new Date();
+// FIX: Corrected mock data to match SaleTransaction interface and use valid enum values.
 const mockTodaysSales: SaleTransaction[] = [
-  { id: 'ORD-240721-001', date: new Date(today.setHours(9, 15, 0)).toISOString(), customerName: 'علي محمد', totalAmount: 150.75, paymentMethod: 'Card', status: 'Paid' },
-  { id: 'ORD-240721-002', date: new Date(today.setHours(10, 30, 0)).toISOString(), customerName: 'فاطمة الزهراء', totalAmount: 85.00, paymentMethod: 'Cash', status: 'Paid' },
-  { id: 'ORD-240721-003', date: new Date(today.setHours(11, 5, 0)).toISOString(), customerName: 'خالد عبدالله', totalAmount: 220.50, paymentMethod: 'Online', status: 'Paid' },
-  { id: 'ORD-240721-004', date: new Date(today.setHours(12, 45, 0)).toISOString(), customerName: 'سارة إبراهيم', totalAmount: 45.25, paymentMethod: 'Card', status: 'Pending' },
+  { id: 'ORD-240721-001', customerId: 'CUST-001', date: new Date(new Date().setHours(9, 15, 0)).toISOString(), customerName: 'علي محمد', totalAmount: 150.75, paidAmount: 150.75, remainingAmount: 0, paymentMethod: 'Card', status: 'Paid', seller: 'أحمد صالح', items: [], subtotal: 131.09, totalItemDiscount: 0, invoiceDiscount: 0, tax: 19.66 },
+  { id: 'ORD-240721-002', customerId: 'CUST-002', date: new Date(new Date().setHours(10, 30, 0)).toISOString(), customerName: 'فاطمة الزهراء', totalAmount: 85.00, paidAmount: 85.00, remainingAmount: 0, paymentMethod: 'Cash', status: 'Paid', seller: 'أحمد صالح', items: [], subtotal: 73.91, totalItemDiscount: 0, invoiceDiscount: 0, tax: 11.09 },
+  { id: 'ORD-240721-003', customerId: 'CUST-003', date: new Date(new Date().setHours(11, 5, 0)).toISOString(), customerName: 'خالد عبدالله', totalAmount: 220.50, paidAmount: 220.50, remainingAmount: 0, paymentMethod: 'Card', status: 'Paid', seller: 'أحمد صالح', items: [], subtotal: 191.74, totalItemDiscount: 0, invoiceDiscount: 0, tax: 28.76 },
+  { id: 'ORD-240721-004', customerId: 'CUST-004', date: new Date(new Date().setHours(12, 45, 0)).toISOString(), customerName: 'سارة إبراهيم', totalAmount: 45.25, paidAmount: 0, remainingAmount: 45.25, paymentMethod: 'Card', status: 'Due', seller: 'أحمد صالح', items: [], subtotal: 39.35, totalItemDiscount: 0, invoiceDiscount: 0, tax: 5.90 },
 ];
 
 const SalesTodayPage: React.FC = () => {
@@ -68,9 +69,10 @@ const SalesTodayPage: React.FC = () => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">{sale.totalAmount.toFixed(2)} ر.س</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">{sale.paymentMethod}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
+                    {/* FIX: Replaced invalid 'Pending' status check with 'Partial' to match the SaleStatus type. */}
                     <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                       sale.status === 'Paid' ? 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300' :
-                      sale.status === 'Pending' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300' : 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300'
+                      sale.status === 'Partial' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300' : 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300'
                     }`}>
                       {sale.status}
                     </span>

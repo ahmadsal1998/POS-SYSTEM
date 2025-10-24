@@ -109,14 +109,28 @@ export interface MultiUnitProductCalculatedFields {
   };
 }
 
+export type SalePaymentMethod = 'Cash' | 'Card' | 'Credit';
+export type SaleStatus = 'Paid' | 'Partial' | 'Due';
+
 export interface SaleTransaction {
   id: string;
   date: string; // ISO format string
   customerName: string;
+  customerId: string; 
   totalAmount: number;
-  paymentMethod: string;
-  status: 'Paid' | 'Pending' | 'Refunded';
+  paidAmount: number; 
+  remainingAmount: number;
+  paymentMethod: SalePaymentMethod;
+  status: SaleStatus;
+  seller: string;
+  // Add item details to show in the modal
+  items: POSCartItem[];
+  subtotal: number;
+  totalItemDiscount: number; // Sum of all item discounts
+  invoiceDiscount: number; // A single discount on the whole invoice
+  tax: number; // Tax amount
 }
+
 
 // --- CATEGORY MANAGEMENT INTERFACES ---
 
@@ -286,6 +300,7 @@ export interface Supplier {
   name: string;
   contactPerson?: string;
   phone: string;
+  email?: string;
   address?: string;
   notes?: string;
   previousBalance: number;
@@ -381,4 +396,24 @@ export interface User {
   createdAt: string; // ISO date string
   lastLogin: string | null; // ISO date string or null
   status: 'Active' | 'Inactive';
+}
+
+// --- NEW SALES MANAGEMENT INTERFACES ---
+export interface CustomerPayment {
+    id: string;
+    customerId: string;
+    date: string; // ISO format
+    amount: number;
+    method: 'Cash' | 'Bank Transfer' | 'Cheque';
+    invoiceId?: string; // Optional link to a specific invoice
+    notes?: string;
+}
+
+export interface CustomerAccountSummary {
+    customerId: string;
+    customerName: string;
+    totalSales: number;
+    totalPaid: number;
+    balance: number;
+    lastPaymentDate: string | null;
 }
