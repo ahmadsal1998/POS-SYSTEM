@@ -107,7 +107,6 @@ const SaleDetailsModal: React.FC<{ sale: SaleTransaction | null, onClose: () => 
                             <div className="flex justify-between"><span className="text-gray-600 dark:text-gray-400">{AR_LABELS.discount}:</span><span>-{(sale.totalItemDiscount + sale.invoiceDiscount).toFixed(2)} ر.س</span></div>
                             <div className="flex justify-between"><span className="text-gray-600 dark:text-gray-400">{AR_LABELS.tax}:</span><span>+{sale.tax.toFixed(2)} ر.س</span></div>
                             <div className="flex justify-between font-bold text-lg border-t dark:border-gray-600 pt-1 mt-1"><span className="text-gray-800 dark:text-gray-100">{AR_LABELS.grandTotal}:</span><span className="text-orange-600">{sale.totalAmount.toFixed(2)} ر.س</span></div>
-                            {/* FIX: Replaced AR_LABELS.totalPaid with AR_LABELS.totalPayments to resolve type error. */}
                             <div className="flex justify-between"><span className="text-gray-600 dark:text-gray-400">{AR_LABELS.amountPaid}:</span><span className="text-green-600">{sale.paidAmount.toFixed(2)} ر.س</span></div>
                             <div className="flex justify-between"><span className="text-gray-600 dark:text-gray-400">{AR_LABELS.remaining}:</span><span className="text-red-600">{sale.remainingAmount.toFixed(2)} ر.س</span></div>
                         </div>
@@ -245,7 +244,6 @@ const CustomerDetailsModal: React.FC<{
                         </div>
                         <div className="text-left text-sm">
                             <p><strong>{AR_LABELS.totalSales}:</strong> {summary.totalSales.toFixed(2)}</p>
-                            {/* FIX: Replaced AR_LABELS.totalPaid with AR_LABELS.totalPayments to resolve type error. */}
                             <p><strong>{AR_LABELS.totalPayments}:</strong> {summary.totalPaid.toFixed(2)}</p>
                             <p className="font-bold text-lg">{AR_LABELS.balance}: <span className={summary.balance > 0 ? 'text-red-600' : 'text-green-600'}>{summary.balance.toFixed(2)}</span></p>
                         </div>
@@ -257,7 +255,7 @@ const CustomerDetailsModal: React.FC<{
                                     <th className="p-2 text-xs font-medium uppercase text-right">{AR_LABELS.date}</th>
                                     <th className="p-2 text-xs font-medium uppercase text-right">{AR_LABELS.description}</th>
                                     <th className="p-2 text-xs font-medium uppercase text-left">{AR_LABELS.debit}</th>
-                                    <th className="p-2 text-xs font-medium uppercase text-left">{AR_LABELS.credit}</th>
+                                    <th className="p-2 text-xs font-medium uppercase text-left">{AR_LABELS.creditTerm}</th>
                                     <th className="p-2 text-xs font-medium uppercase text-left">{AR_LABELS.balance}</th>
                                 </tr>
                             </thead>
@@ -458,9 +456,8 @@ const ReportsView: React.FC<{ sales: SaleTransaction[], customers: Customer[], p
             }
             case 'customer': {
                 headers = [AR_LABELS.customerName, AR_LABELS.invoiceCount, AR_LABELS.totalSales, AR_LABELS.paid, AR_LABELS.remaining];
-                // FIX: Refactored reduce function to improve type inference and resolve errors.
-                // FIX: Explicitly type the accumulator in the reduce function to ensure correct type inference.
-                const byCustomer = filteredSales.reduce((acc: Record<string, { name: string, count: number, total: number, paid: number, remaining: number }>, sale) => {
+                // FIX: Explicitly type the accumulator's initial value in the reduce function to ensure correct type inference.
+                const byCustomer = filteredSales.reduce((acc, sale) => {
                     if (!acc[sale.customerId]) {
                         acc[sale.customerId] = { name: sale.customerName, count: 0, total: 0, paid: 0, remaining: 0 };
                     }
@@ -469,7 +466,8 @@ const ReportsView: React.FC<{ sales: SaleTransaction[], customers: Customer[], p
                     acc[sale.customerId].paid += sale.paidAmount;
                     acc[sale.customerId].remaining += sale.remainingAmount;
                     return acc;
-                }, {} as Record<string, { name: string, count: number, total: number, paid: number, remaining: number }>);
+                // FIX: Add type assertion to the accumulator.
+                }, {} as Record<string, { name: string; count: number; total: number; paid: number; remaining: number }>);
                 data = Object.values(byCustomer).map(c => ({
                     [AR_LABELS.customerName]: c.name,
                     [AR_LABELS.invoiceCount]: c.count,
@@ -481,9 +479,8 @@ const ReportsView: React.FC<{ sales: SaleTransaction[], customers: Customer[], p
             }
             case 'user': {
                 headers = [AR_LABELS.seller, AR_LABELS.invoiceCount, AR_LABELS.totalSales, AR_LABELS.paid, AR_LABELS.remaining];
-                // FIX: Refactored reduce function to improve type inference and resolve errors.
-                // FIX: Explicitly type the accumulator in the reduce function to ensure correct type inference.
-                const byUser = filteredSales.reduce((acc: Record<string, { count: number, total: number, paid: number, remaining: number }>, sale) => {
+                // FIX: Explicitly type the accumulator's initial value in the reduce function to ensure correct type inference.
+                const byUser = filteredSales.reduce((acc, sale) => {
                     if (!acc[sale.seller]) {
                        acc[sale.seller] = { count: 0, total: 0, paid: 0, remaining: 0 };
                     }
@@ -492,7 +489,8 @@ const ReportsView: React.FC<{ sales: SaleTransaction[], customers: Customer[], p
                     acc[sale.seller].paid += sale.paidAmount;
                     acc[sale.seller].remaining += sale.remainingAmount;
                     return acc;
-                }, {} as Record<string, { count: number, total: number, paid: number, remaining: number }>);
+                // FIX: Add type assertion to the accumulator.
+                }, {} as Record<string, { count: number; total: number; paid: number; remaining: number }>);
                 data = Object.entries(byUser).map(([seller, u]) => ({
                     [AR_LABELS.seller]: seller,
                     [AR_LABELS.invoiceCount]: u.count,
@@ -504,9 +502,8 @@ const ReportsView: React.FC<{ sales: SaleTransaction[], customers: Customer[], p
             }
             case 'payment': {
                 headers = [AR_LABELS.paymentType, AR_LABELS.invoiceCount, AR_LABELS.totalSales, AR_LABELS.paid, AR_LABELS.remaining];
-                // FIX: Refactored reduce function to improve type inference and resolve errors.
-                // FIX: Explicitly type the accumulator in the reduce function to ensure correct type inference.
-                const byPayment = filteredSales.reduce((acc: Record<SalePaymentMethod, { count: number, total: number, paid: number, remainingAmount: number }>, sale) => {
+                // FIX: Explicitly type the accumulator's initial value in the reduce function to ensure correct type inference.
+                const byPayment = filteredSales.reduce((acc, sale) => {
                     const method = sale.paymentMethod;
                     if (!acc[method]) {
                         acc[method] = { count: 0, total: 0, paid: 0, remainingAmount: 0 };
@@ -516,7 +513,8 @@ const ReportsView: React.FC<{ sales: SaleTransaction[], customers: Customer[], p
                     acc[method].paid += sale.paidAmount;
                     acc[method].remainingAmount += sale.remainingAmount;
                     return acc;
-                }, {} as Record<SalePaymentMethod, { count: number, total: number, paid: number, remainingAmount: number }>);
+                // FIX: Add type assertion to the accumulator.
+                }, {} as Record<SalePaymentMethod, { count: number; total: number; paid: number; remainingAmount: number }>);
                 data = Object.entries(byPayment).map(([method, p]) => ({
                     [AR_LABELS.paymentType]: method,
                     [AR_LABELS.invoiceCount]: p.count,
@@ -558,25 +556,17 @@ const ReportsView: React.FC<{ sales: SaleTransaction[], customers: Customer[], p
                 <div className="p-4 border dark:border-gray-700 rounded-lg">
                     <div className="flex justify-end gap-2 mb-4">
                         <button onClick={() => alert('Exporting to Excel...')} className="inline-flex items-center px-3 py-1.5 text-sm bg-gray-200 dark:bg-gray-600 rounded-md"><ExportIcon className="w-4 h-4 ml-1" />{AR_LABELS.exportExcel}</button>
-                        <button onClick={() => alert('Exporting to PDF...')} className="inline-flex items-center px-3 py-1.5 text-sm bg-gray-200 dark:bg-gray-600 rounded-md"><ExportIcon className="w-4 h-4 ml-1" />{AR_LABELS.exportPDF}</button>
-                        <button onClick={() => window.print()} className="inline-flex items-center px-3 py-1.5 text-sm bg-gray-200 dark:bg-gray-600 rounded-md"><PrintIcon />{AR_LABELS.printReport}</button>
+                        <button onClick={() => alert('Exporting to PDF...')} className="inline-flex items-center px-3 py-1.5 text-sm bg-gray-200 dark:bg-gray-600 rounded-md"><PrintIcon className="w-4 h-4 ml-1" />{AR_LABELS.exportPDF}</button>
                     </div>
                     <div className="overflow-x-auto">
-                        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-right">
+                        <table className="min-w-full text-right">
                             <thead className="bg-gray-50 dark:bg-gray-700/50">
-                                <tr>
-                                    {reportHeaders.map(header => <th key={header} className="px-4 py-2 text-xs font-medium uppercase">{header}</th>)}
-                                </tr>
+                                <tr>{reportHeaders.map(h => <th key={h} className="px-4 py-2 text-xs font-medium uppercase">{h}</th>)}</tr>
                             </thead>
-                            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                                {reportData.map((row, index) => (
-                                    <tr key={index}>
-                                        {reportHeaders.map(header => <td key={header} className="px-4 py-2 whitespace-nowrap text-sm">{row[header]}</td>)}
-                                    </tr>
+                            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                                {reportData.map((row, i) => (
+                                    <tr key={i}>{reportHeaders.map(h => <td key={h} className="px-4 py-2 text-sm">{row[h]}</td>)}</tr>
                                 ))}
-                                {reportData.length === 0 && (
-                                  <tr><td colSpan={reportHeaders.length} className="text-center py-10 text-gray-500 dark:text-gray-400">{AR_LABELS.noSalesFound}</td></tr>  
-                                )}
                             </tbody>
                         </table>
                     </div>
@@ -586,13 +576,17 @@ const ReportsView: React.FC<{ sales: SaleTransaction[], customers: Customer[], p
     );
 };
 
-
-const CustomerAccountsView: React.FC<{ sales: SaleTransaction[], customers: Customer[], payments: CustomerPayment[], setPayments: React.Dispatch<React.SetStateAction<CustomerPayment[]>> }> = ({ sales, customers, payments, setPayments }) => {
+const CustomerAccountsView: React.FC<{
+    sales: SaleTransaction[];
+    customers: Customer[];
+    payments: CustomerPayment[];
+    setPayments: React.Dispatch<React.SetStateAction<CustomerPayment[]>>;
+}> = ({ sales, customers, payments, setPayments }) => {
     const [searchTerm, setSearchTerm] = useState('');
-    const [balanceFilter, setBalanceFilter] = useState('all'); // 'all', 'hasBalance', 'noBalance'
+    const [balanceFilter, setBalanceFilter] = useState('all'); // 'all', 'has_balance', 'no_balance'
     const [paymentModalTarget, setPaymentModalTarget] = useState<CustomerAccountSummary | null>(null);
-    const [detailsModalTarget, setDetailsModalTarget] = useState<CustomerAccountSummary | null>(null);
-    
+    const [statementModalTarget, setStatementModalTarget] = useState<CustomerAccountSummary | null>(null);
+
     const customerSummaries = useMemo<CustomerAccountSummary[]>(() => {
         return customers.map(customer => {
             const customerSales = sales.filter(s => s.customerId === customer.id);
@@ -612,27 +606,23 @@ const CustomerAccountsView: React.FC<{ sales: SaleTransaction[], customers: Cust
                 lastPaymentDate: lastPayment ? new Date(lastPayment.date).toLocaleDateString('ar-SA') : null,
             };
         });
-    }, [sales, customers, payments]);
-    
+    }, [customers, sales, payments]);
+
     const filteredSummaries = useMemo(() => {
         return customerSummaries.filter(c => {
             const customerDetails = customers.find(cust => cust.id === c.customerId);
-            const matchesSearch = searchTerm 
-                ? c.customerName.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                  customerDetails?.phone.includes(searchTerm)
-                : true;
-
-            const matchesFilter = balanceFilter === 'all' || 
-                                  (balanceFilter === 'hasBalance' && c.balance > 0) || 
-                                  (balanceFilter === 'noBalance' && c.balance <= 0);
-            return matchesSearch && matchesFilter;
+            const matchesSearch = searchTerm ? c.customerName.toLowerCase().includes(searchTerm.toLowerCase()) || customerDetails?.phone.includes(searchTerm) : true;
+            if (!matchesSearch) return false;
+            
+            if (balanceFilter === 'has_balance') return c.balance > 0;
+            if (balanceFilter === 'no_balance') return c.balance <= 0;
+            return true;
         });
     }, [customerSummaries, searchTerm, balanceFilter, customers]);
-
+    
     const handleSavePayment = (payment: CustomerPayment) => {
-        setPayments(prev => [...prev, payment]);
+        setPayments(prev => [payment, ...prev]);
         setPaymentModalTarget(null);
-        alert(`${AR_LABELS.addPayment} successful!`);
     };
 
     return (
@@ -642,11 +632,13 @@ const CustomerAccountsView: React.FC<{ sales: SaleTransaction[], customers: Cust
                     <input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder={AR_LABELS.searchByCustomerNameOrPhone} className="w-full pl-3 pr-10 py-2 rounded-md border text-right"/>
                     <SearchIcon className="absolute top-1/2 left-3 -translate-y-1/2 h-5 w-5 text-gray-400" />
                 </div>
-                 <select value={balanceFilter} onChange={e => setBalanceFilter(e.target.value)} className="w-full md:w-auto p-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 rounded-md text-right">
-                    <option value="all">{AR_LABELS.allCustomers}</option>
-                    <option value="hasBalance">{AR_LABELS.hasBalance}</option>
-                    <option value="noBalance">{AR_LABELS.noBalance}</option>
-                </select>
+                 <div className="flex items-center gap-2">
+                    <select value={balanceFilter} onChange={e => setBalanceFilter(e.target.value)} className="p-2 border rounded-md text-right">
+                        <option value="all">{AR_LABELS.allCustomers}</option>
+                        <option value="has_balance">{AR_LABELS.hasBalance}</option>
+                        <option value="no_balance">{AR_LABELS.noBalance}</option>
+                    </select>
+                </div>
             </div>
             <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-right">
@@ -655,22 +647,24 @@ const CustomerAccountsView: React.FC<{ sales: SaleTransaction[], customers: Cust
                             <th className="px-4 py-2 text-xs font-medium uppercase">{AR_LABELS.customerName}</th>
                             <th className="px-4 py-2 text-xs font-medium uppercase">{AR_LABELS.totalSales}</th>
                             <th className="px-4 py-2 text-xs font-medium uppercase">{AR_LABELS.totalPayments}</th>
-                            <th className="px-4 py-2 text-xs font-medium uppercase">{AR_LABELS.remainingBalance}</th>
+                            <th className="px-4 py-2 text-xs font-medium uppercase">{AR_LABELS.balance}</th>
                             <th className="px-4 py-2 text-xs font-medium uppercase">{AR_LABELS.lastPayment}</th>
                             <th className="px-4 py-2 text-xs font-medium uppercase text-center">{AR_LABELS.actions}</th>
                         </tr>
                     </thead>
                     <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                         {filteredSummaries.map(c => (
-                             <tr key={c.customerId} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                            <tr key={c.customerId} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
                                 <td className="px-4 py-2 whitespace-nowrap text-sm font-medium">{c.customerName}</td>
                                 <td className="px-4 py-2 whitespace-nowrap text-sm">{c.totalSales.toFixed(2)}</td>
                                 <td className="px-4 py-2 whitespace-nowrap text-sm text-green-600">{c.totalPaid.toFixed(2)}</td>
-                                <td className="px-4 py-2 whitespace-nowrap text-sm font-bold text-red-600">{c.balance.toFixed(2)}</td>
+                                <td className="px-4 py-2 whitespace-nowrap text-sm font-bold">
+                                    {c.balance > 0 ? <span className="text-red-600">{c.balance.toFixed(2)}</span> : <span className="text-green-600">{c.balance.toFixed(2)}</span>}
+                                </td>
                                 <td className="px-4 py-2 whitespace-nowrap text-sm">{c.lastPaymentDate || 'N/A'}</td>
                                 <td className="px-4 py-2 whitespace-nowrap text-center text-sm">
                                     <button onClick={() => setPaymentModalTarget(c)} className="p-1 ml-2 text-green-600" title={AR_LABELS.addPayment}><AddPaymentIcon/></button>
-                                    <button onClick={() => setDetailsModalTarget(c)} className="p-1 ml-2 text-blue-600" title={AR_LABELS.viewDetails}><ViewIcon/></button>
+                                    <button onClick={() => setStatementModalTarget(c)} className="p-1 ml-2 text-blue-600" title={AR_LABELS.customerStatement}><ViewIcon/></button>
                                 </td>
                             </tr>
                         ))}
@@ -678,7 +672,7 @@ const CustomerAccountsView: React.FC<{ sales: SaleTransaction[], customers: Cust
                 </table>
             </div>
             <AddPaymentModal customerSummary={paymentModalTarget} onClose={() => setPaymentModalTarget(null)} onSave={handleSavePayment} />
-            <CustomerDetailsModal summary={detailsModalTarget} sales={sales} payments={payments} onClose={() => setDetailsModalTarget(null)} />
+            <CustomerDetailsModal summary={statementModalTarget} sales={sales} payments={payments} onClose={() => setStatementModalTarget(null)} />
         </div>
     );
 };

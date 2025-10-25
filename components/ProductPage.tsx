@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo } from 'react';
 import { AR_LABELS, AddProductIcon, EditIcon, DeleteIcon, SearchIcon } from '../constants';
 import { Product } from '../types';
@@ -9,13 +10,14 @@ interface ProductPageProps {
 const sevenDaysAgo = new Date();
 sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
+// FIX: Added missing 'costPrice' property to all products to match the 'Product' type.
 const initialMockProducts: Product[] = [
-  { id: 1, name: 'لابتوب Dell XPS 15', category: 'إلكترونيات', price: 1200.00, stock: 50, barcode: 'DELL-XPS15-12345', expiryDate: '2025-12-31', createdAt: '2023-01-15' },
-  { id: 2, name: 'هاتف Samsung Galaxy S23', category: 'إلكترونيات', price: 899.99, stock: 120, barcode: 'SAM-S23-67890', expiryDate: '2026-06-30', createdAt: new Date().toISOString() },
-  { id: 3, name: 'طاولة قهوة خشبية', category: 'أثاث', price: 150.50, stock: 30, barcode: 'FURN-CT-11223', expiryDate: '2099-12-31', createdAt: '2023-11-10' },
-  { id: 4, name: 'سماعات رأس Sony WH-1000XM5', category: 'إلكترونيات', price: 349.00, stock: 8, barcode: 'SONY-WH-44556', expiryDate: '2027-01-01', createdAt: '2023-09-01' },
-  { id: 5, name: 'حليب طازج', category: 'مشروبات', price: 5.50, stock: 20, barcode: 'MILK-FRESH-555', expiryDate: '2024-01-01', createdAt: '2023-12-25' },
-  { id: 6, name: 'كرسي مكتب مريح', category: 'أثاث', price: 299.00, stock: 25, barcode: 'FURN-OC-77889', expiryDate: '2099-12-31', createdAt: sevenDaysAgo.toISOString() },
+  { id: 1, name: 'لابتوب Dell XPS 15', category: 'إلكترونيات', price: 1200.00, costPrice: 950.00, stock: 50, barcode: 'DELL-XPS15-12345', expiryDate: '2025-12-31', createdAt: '2023-01-15' },
+  { id: 2, name: 'هاتف Samsung Galaxy S23', category: 'إلكترونيات', price: 899.99, costPrice: 700.00, stock: 120, barcode: 'SAM-S23-67890', expiryDate: '2026-06-30', createdAt: new Date().toISOString() },
+  { id: 3, name: 'طاولة قهوة خشبية', category: 'أثاث', price: 150.50, costPrice: 100.00, stock: 30, barcode: 'FURN-CT-11223', expiryDate: '2099-12-31', createdAt: '2023-11-10' },
+  { id: 4, name: 'سماعات رأس Sony WH-1000XM5', category: 'إلكترونيات', price: 349.00, costPrice: 250.00, stock: 8, barcode: 'SONY-WH-44556', expiryDate: '2027-01-01', createdAt: '2023-09-01' },
+  { id: 5, name: 'حليب طازج', category: 'مشروبات', price: 5.50, costPrice: 3.50, stock: 20, barcode: 'MILK-FRESH-555', expiryDate: '2024-01-01', createdAt: '2023-12-25' },
+  { id: 6, name: 'كرسي مكتب مريح', category: 'أثاث', price: 299.00, costPrice: 180.00, stock: 25, barcode: 'FURN-OC-77889', expiryDate: '2099-12-31', createdAt: sevenDaysAgo.toISOString() },
 ];
 
 const ProductPage: React.FC<ProductPageProps> = ({ setActivePath }) => {

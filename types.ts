@@ -53,6 +53,7 @@ export interface Product {
   category: string;
   brand?: string; // Optional brand
   price: number;
+  costPrice: number; // Added for profit calculation
   stock: number;
   barcode: string; 
   expiryDate: string; 
@@ -195,6 +196,7 @@ export interface POSInvoice {
 export interface WholesaleProductUnit {
     name: string; // Box, Carton, Piece
     price: number;
+    cost: number; // Added for profit calculation
     stock: number;
     barcode: string;
 }

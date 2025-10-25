@@ -1,9 +1,8 @@
-
-
 import React from 'react';
 import { AR_LABELS, METRIC_CARDS_DATA, QUICK_ACTIONS_DATA } from '../constants';
 import MetricCard from './MetricCard';
 import QuickActionCard from './QuickActionCard';
+import ProductPerformanceCard from './ProductPerformanceCard';
 
 const Dashboard: React.FC = () => {
   return (
@@ -47,6 +46,10 @@ const Dashboard: React.FC = () => {
           ))}
         </div>
       </div>
+
+      {/* Product Performance & Insights */}
+      <ProductPerformanceCard />
+
     </div>
   );
 };

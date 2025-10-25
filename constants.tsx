@@ -1,3 +1,5 @@
+
+
 import React from 'react';
 import { NavItem, MetricCardProps, QuickActionProps, TopNavItem } from './types';
 
@@ -47,7 +49,7 @@ export const AR_LABELS = {
   lowStockProducts: 'منتجات منخفضة المخزون',
   expiredProducts: 'منتجات منتهية الصلاحية',
   customersWithBalance: 'العملاء الذين لديهم رصيد',
-  quickActions: 'إجراءات سريعة',
+  quickActions: 'إجراءات سبعة',
   newSale: 'بيع جديد',
   addProduct: 'إضافة منتج',
   viewCustomers: 'عرض العملاء',
@@ -169,7 +171,8 @@ export const AR_LABELS = {
   customerStatement: 'كشف حساب العميل',
   transactionHistory: 'سجل الحركات',
   debit: 'مدين',
-  credit: 'دائن',
+  // FIX: An object literal cannot have multiple properties with the same name.
+  creditTerm: 'دائن',
   balance: 'الرصيد',
   invoice: 'فاتورة',
   paymentReceived: 'دفعة مستلمة',
@@ -237,7 +240,7 @@ export const AR_LABELS = {
   payNow: 'الدفع الآن',
   cash: 'نقدي',
   card: 'بطاقة',
-  // credit: 'آجل', // 'credit' key is duplicated. Using the one from Purchases section.
+  credit: 'آجل',
   visa: 'فيزا',
   payment: 'الدفع',
   amountReceived: 'المبلغ المستلم',
@@ -249,6 +252,7 @@ export const AR_LABELS = {
   restore: 'استعادة',
   noItemsInCart: 'لا توجد أصناف في السلة.',
   selectRegisteredCustomerForCredit: 'للمبيعات الآجلة, يرجى اختيار عميل مسجل.',
+  autoPrintInvoice: 'طباعة الفاتورة تلقائياً',
   
   // Wholesale POS Page Specific
   wholesalePOS: 'نقطة بيع الجملة',
@@ -322,7 +326,7 @@ export const AR_LABELS = {
   vatPercentage: 'نسبة ضريبة القيمة المضافة (%)',
   invoiceNumberFormat: 'تنسيق ترقيم الفواتير',
   invoiceFooterText: 'النص التذييلي الافتراضي للفاتورة',
-  autoPrintInvoice: 'طباعة الفواتير تلقائياً بعد كل عملية بيع',
+  // autoPrintInvoice: 'طباعة الفواتير تلقائياً بعد كل عملية بيع', // This is duplicated, using the one from POS
   sellWithoutStock: 'السماح ببيع المنتجات التي لا يوجد لها مخزون',
   userRolesAndPermissions: 'أدوار المستخدمين والصلاحيات',
   sessionDuration: 'مدة جلسة تسجيل الدخول (بالدقائق)',
@@ -336,6 +340,9 @@ export const AR_LABELS = {
   enableLowStockNotifications: 'تفعيل إشعارات انخفاض المخزون',
   paymentAndCurrencyOptions: 'خيارات الدفع والعملة',
   enablePaymentMethods: 'تفعيل طرق الدفع',
+  allowCash: 'السماح بالنقد',
+  allowCard: 'السماح بالبطاقة',
+  allowCredit: 'السماح بالآجل',
   notificationsAndAlerts: 'الإشعارات والتنبيهات',
   enableOverdueNotifications: 'تفعيل إشعارات الدفعات المتأخرة',
   enableAutoNotifications: 'تفعيل الإشعارات التلقائية (بريد إلكتروني/واتساب)',
@@ -427,6 +434,18 @@ export const AR_LABELS = {
   supplierOwesYou: 'المورد مدين لك',
   youOweSupplier: 'أنت مدين للمورد',
   supplierBalance: 'رصيد المورد',
+  // NEW LABELS FOR PURCHASES REFACTOR
+  purchaseOrders: 'أوامر الشراء',
+  supplierAccounts: 'حسابات الموردين',
+  purchaseReports: 'تقارير المشتريات',
+  totalDue: 'إجمالي المستحق',
+  supplierStatement: 'كشف حساب المورد',
+  paymentMade: 'دفعة مسددة',
+  purchaseReportBySupplier: 'تقرير المشتريات حسب المورد',
+  purchaseReportByProduct: 'تقرير المشتريات حسب المنتج',
+  totalPurchaseReport: 'تقرير إجمالي المشتريات',
+  searchBySupplierNameOrPhone: 'ابحث بالاسم أو رقم الهاتف...',
+  purchaseOrder: 'أمر شراء',
 
 
   // Expenses Page Specific
@@ -446,15 +465,54 @@ export const AR_LABELS = {
   // Cheques Page Specific
   cheques: 'الشيكات',
   chequeManagement: 'إدارة الشيكات',
-  chequeManagementDescription: 'عرض وتتبع حالة جميع الشيكات الصادرة.',
+  chequeManagementDescription: 'عرض وتتبع حالة جميع الشيكات الصادرة والواردة.',
   chequeCalendar: 'تقويم الشيكات',
   chequeStatus: 'حالة الشيك',
   changeStatus: 'تغيير الحالة',
   cleared: 'تم الصرف',
   bounced: 'مرتجع',
-  // chequeDetails: 'تفاصيل الشيك', // 'chequeDetails' is a duplicate key. Using the one from the Purchases section.
   // FIX: Add 'chequeDetails' to resolve type errors in PurchasesPage.tsx and ChequesPage.tsx
   chequeDetails: 'تفاصيل الشيك',
+  // New labels for enhancement
+  overdue: 'متأخرة الاستحقاق',
+  dueToday: 'مستحقة اليوم',
+  dueThisWeek: 'مستحقة هذا الأسبوع',
+  allDates: 'كل التواريخ',
+  searchByChequeOrSupplier: 'ابحث برقم الشيك أو المورد...',
+  filterByDueDate: 'تصفية حسب تاريخ الاستحقاق',
+  listView: 'عرض القائمة',
+  calendarView: 'عرض التقويم',
+  totalPending: 'إجمالي المعلق',
+  totalOverdue: 'إجمالي المتأخر',
+  totalBounced: 'إجمالي المرتجع',
+  totalCleared: 'إجمالي المصروف',
+  chequeNumberShort: 'رقم الشيك',
+
+  // Product Performance & Insights
+  productPerformanceInsights: 'أداء المنتج والرؤى',
+  timeRange: 'النطاق الزمني',
+  today: 'اليوم',
+  thisWeek: 'هذا الأسبوع',
+  last3Months: 'آخر 3 أشهر',
+  thisYear: 'هذا العام',
+  bestSelling: 'الأكثر مبيعًا',
+  leastSelling: 'الأقل مبيعًا',
+  mostProfitable: 'الأكثر ربحية',
+  leastProfitable: 'الأقل ربحية',
+  mostDemanded: 'الأكثر طلبًا (كمية)',
+  totalItemsSold: 'إجمالي الأصناف المباعة',
+  avgSellingPrice: 'متوسط سعر البيع',
+  bestSellingProduct: 'المنتج الأكثر مبيعًا',
+  leastSellingProduct: 'المنتج الأقل مبيعًا',
+  rank: 'الترتيب',
+  salesCount: 'عدد المبيعات',
+  revenue: 'الإيرادات',
+  profitMargin: 'هامش الربح',
+  // FIX: Renamed 'change' to 'percentageChange' to avoid duplicate key error.
+  percentageChange: 'التغير (%)',
+  salesTrend: 'اتجاه المبيعات',
+  salesValue: 'قيمة المبيعات',
+  insights: 'الرؤى والتحليلات',
 
 
   // Other
@@ -545,6 +603,13 @@ const XIcon = ({ className, ...props }: IconProps) => (
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
   </svg>
 );
+
+const CheckCircleIcon = ({ className, ...props }: IconProps) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" {...props}>
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+);
+
 
 export const NAV_ITEMS: NavItem[] = [
   { id: 1, label: AR_LABELS.dashboard, icon: <DashboardIcon />, path: '/' },
@@ -650,4 +715,4 @@ export const ToggleSwitch: React.FC<{
 };
 
 
-export { ChevronDownIcon, AddProductIcon, EditIcon, DeleteIcon, CancelIcon, GenerateBarcodeIcon, PlusIcon, MinusIcon, PrintIcon, ViewIcon, SearchIcon, ImportIcon, ExportIcon, GridViewIcon, TableViewIcon, CashIcon, CreditCardIcon, HandIcon, MenuIcon, XIcon, UsersIcon, PurchasesIcon, ExpensesIcon, ChequesIcon, SunIcon, MoonIcon, AddPaymentIcon };
+export { ChevronDownIcon, AddProductIcon, EditIcon, DeleteIcon, CancelIcon, GenerateBarcodeIcon, PlusIcon, MinusIcon, PrintIcon, ViewIcon, SearchIcon, ImportIcon, ExportIcon, GridViewIcon, TableViewIcon, CashIcon, CreditCardIcon, HandIcon, MenuIcon, XIcon, UsersIcon, PurchasesIcon, ExpensesIcon, ChequesIcon, SunIcon, MoonIcon, AddPaymentIcon, ClockIcon, CheckCircleIcon };

@@ -5,19 +5,19 @@ import { AR_LABELS, UUID, SearchIcon, DeleteIcon, PlusIcon, CancelIcon, PrintIco
 // --- MOCK DATA ---
 const MOCK_WHOLESALE_PRODUCTS: WholesaleProduct[] = [
   { id: 1, name: 'كوكا كولا', category: 'مشروبات', brand: 'كوكا كولا', createdAt: '2023-01-15', imageUrl: 'https://picsum.photos/seed/coke/200/200', units: [
-    { name: 'حبة', price: 2.50, stock: 500, barcode: 'COKE-P' },
-    { name: 'كرتون (24 حبة)', price: 55.00, stock: 20, barcode: 'COKE-C24' },
+    { name: 'حبة', price: 2.50, cost: 1.50, stock: 500, barcode: 'COKE-P' },
+    { name: 'كرتون (24 حبة)', price: 55.00, cost: 36.00, stock: 20, barcode: 'COKE-C24' },
   ]},
   { id: 2, name: 'ماء (صغير)', category: 'مشروبات', brand: 'نستله', createdAt: '2023-02-20', imageUrl: 'https://picsum.photos/seed/water/200/200', units: [
-    { name: 'حبة', price: 1.00, stock: 1000, barcode: 'WATER-P' },
-    { name: 'كرتون (40 حبة)', price: 35.00, stock: 25, barcode: 'WATER-C40' },
+    { name: 'حبة', price: 1.00, cost: 0.50, stock: 1000, barcode: 'WATER-P' },
+    { name: 'كرتون (40 حبة)', price: 35.00, cost: 20.00, stock: 25, barcode: 'WATER-C40' },
   ]},
   { id: 3, name: 'ليز بالملح', category: 'وجبات خفيفة', brand: 'ليز', createdAt: '2023-03-10', imageUrl: 'https://picsum.photos/seed/lays/200/200', units: [
-    { name: 'حبة', price: 3.00, stock: 300, barcode: 'LAYS-P' },
-    { name: 'صندوق (12 حبة)', price: 33.00, stock: 25, barcode: 'LAYS-B12' },
+    { name: 'حبة', price: 3.00, cost: 1.80, stock: 300, barcode: 'LAYS-P' },
+    { name: 'صندوق (12 حبة)', price: 33.00, cost: 21.60, stock: 25, barcode: 'LAYS-B12' },
   ]},
   { id: 4, name: 'هاتف Samsung S23', category: 'إلكترونيات', brand: 'سامسونج', createdAt: '2023-04-01', imageUrl: 'https://picsum.photos/seed/samsung/200/200', units: [
-    { name: 'جهاز', price: 850, stock: 50, barcode: 'SAM-S23' },
+    { name: 'جهاز', price: 850, cost: 700, stock: 50, barcode: 'SAM-S23' },
   ]},
 ];
 
