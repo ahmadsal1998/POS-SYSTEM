@@ -389,12 +389,13 @@ const SalesTableView: React.FC<{ sales: SaleTransaction[], setActivePath: (p: st
 };
 
 const SalesTableRow: React.FC<{sale: SaleTransaction, onView: (s: SaleTransaction) => void}> = ({sale, onView}) => {
-    const statusStyles = {
+    const statusStyles: Record<SaleStatus, string> = {
         Paid: 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300',
         Partial: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300',
         Due: 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300',
+        Returned: 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300',
     };
-    const statusLabels = { Paid: AR_LABELS.paid, Partial: AR_LABELS.partial, Due: AR_LABELS.due };
+    const statusLabels = { Paid: AR_LABELS.paid, Partial: AR_LABELS.partial, Due: AR_LABELS.due, Returned: AR_LABELS.returnProduct };
     return (
         <tr className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
             <td className="px-4 py-2 whitespace-nowrap text-sm font-mono text-blue-600 dark:text-blue-400">{sale.id}</td>
@@ -468,7 +469,8 @@ const ReportsView: React.FC<{ sales: SaleTransaction[], customers: Customer[], p
                     return acc;
                 // FIX: Add type assertion to the accumulator.
                 }, {} as Record<string, { name: string; count: number; total: number; paid: number; remaining: number }>);
-                data = Object.values(byCustomer).map(c => ({
+                // FIX: Explicitly type the mapped parameter 'c' to resolve 'unknown' type error.
+                data = Object.values(byCustomer).map((c: { name: string; count: number; total: number; paid: number; remaining: number }) => ({
                     [AR_LABELS.customerName]: c.name,
                     [AR_LABELS.invoiceCount]: c.count,
                     [AR_LABELS.totalSales]: `${c.total.toFixed(2)} ر.س`,
@@ -491,7 +493,8 @@ const ReportsView: React.FC<{ sales: SaleTransaction[], customers: Customer[], p
                     return acc;
                 // FIX: Add type assertion to the accumulator.
                 }, {} as Record<string, { count: number; total: number; paid: number; remaining: number }>);
-                data = Object.entries(byUser).map(([seller, u]) => ({
+                // FIX: Explicitly type the mapped parameter 'u' to resolve 'unknown' type error.
+                data = Object.entries(byUser).map(([seller, u]: [string, { count: number; total: number; paid: number; remaining: number }]) => ({
                     [AR_LABELS.seller]: seller,
                     [AR_LABELS.invoiceCount]: u.count,
                     [AR_LABELS.totalSales]: `${u.total.toFixed(2)} ر.س`,
@@ -515,7 +518,8 @@ const ReportsView: React.FC<{ sales: SaleTransaction[], customers: Customer[], p
                     return acc;
                 // FIX: Add type assertion to the accumulator.
                 }, {} as Record<SalePaymentMethod, { count: number; total: number; paid: number; remainingAmount: number }>);
-                data = Object.entries(byPayment).map(([method, p]) => ({
+                // FIX: Explicitly type the mapped parameter 'p' to resolve 'unknown' type error.
+                data = Object.entries(byPayment).map(([method, p]: [string, { count: number; total: number; paid: number; remainingAmount: number }]) => ({
                     [AR_LABELS.paymentType]: method,
                     [AR_LABELS.invoiceCount]: p.count,
                     [AR_LABELS.totalSales]: `${p.total.toFixed(2)} ر.س`,

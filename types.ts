@@ -111,7 +111,7 @@ export interface MultiUnitProductCalculatedFields {
 }
 
 export type SalePaymentMethod = 'Cash' | 'Card' | 'Credit';
-export type SaleStatus = 'Paid' | 'Partial' | 'Due';
+export type SaleStatus = 'Paid' | 'Partial' | 'Due' | 'Returned';
 
 export interface SaleTransaction {
   id: string;
@@ -130,6 +130,7 @@ export interface SaleTransaction {
   totalItemDiscount: number; // Sum of all item discounts
   invoiceDiscount: number; // A single discount on the whole invoice
   tax: number; // Tax amount
+  originalInvoiceId?: string; // For returns
 }
 
 
@@ -419,3 +420,6 @@ export interface CustomerAccountSummary {
     balance: number;
     lastPaymentDate: string | null;
 }
+
+// FIX: Moved Theme type here to resolve circular dependency.
+export type Theme = 'light' | 'dark';

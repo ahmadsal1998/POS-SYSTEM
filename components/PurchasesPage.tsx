@@ -155,138 +155,188 @@ const SupplierStatementModal: React.FC<{ summary: SupplierAccountSummary | null;
         const supplierPayments = payments.filter(p => p.supplierId === summary.supplierId).map(p => ({ date: p.date, type: 'payment' as const, description: `${AR_LABELS.paymentMade} - ${p.method}`, debit: 0, credit: p.amount, }));
         return [...supplierPurchases, ...supplierPayments].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()).reduce((acc, trans) => { const prevBalance = acc.length > 0 ? acc[acc.length - 1].balance : 0; const newBalance = prevBalance + trans.debit - trans.credit; acc.push({ ...trans, balance: newBalance }); return acc; }, [] as (typeof supplierPurchases[0] & { balance: number })[]);
     }, [summary, purchases, payments]);
-    return (<div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4" onClick={onClose}><div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-3xl text-right" onClick={e => e.stopPropagation()}><div id="printable-receipt" className="p-6"><div className="flex justify-between items-start pb-4 border-b dark:border-gray-700"><div><h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{AR_LABELS.supplierStatement}</h2><p className="text-lg text-gray-700 dark:text-gray-300">{summary.supplierName}</p></div><div className="text-left text-sm"><p><strong>{AR_LABELS.totalPurchases}:</strong> {summary.totalPurchases.toFixed(2)}</p><p><strong>{AR_LABELS.supplierTotalPaid}:</strong> {summary.totalPaid.toFixed(2)}</p><p className="font-bold text-lg">{AR_LABELS.balance}: <span className={summary.balance > 0 ? 'text-red-600' : 'text-green-600'}>{summary.balance.toFixed(2)}</span></p></div></div><div className="mt-4 max-h-96 overflow-y-auto"><table className="min-w-full"><thead className="bg-gray-50 dark:bg-gray-700/50 sticky top-0"><tr><th className="p-2 text-xs font-medium uppercase text-right">{AR_LABELS.date}</th><th className="p-2 text-xs font-medium uppercase text-right">{AR_LABELS.description}</th><th className="p-2 text-xs font-medium uppercase text-left">{AR_LABELS.debit}</th><th className="p-2 text-xs font-medium uppercase text-left">{AR_LABELS.credit}</th><th className="p-2 text-xs font-medium uppercase text-left">{AR_LABELS.balance}</th></tr></thead><tbody className="divide-y divide-gray-200 dark:divide-gray-700">{transactions.map((t, i) => (<tr key={i}><td className="p-2 text-sm">{new Date(t.date).toLocaleDateString('ar-SA')}</td><td className="p-2 text-sm">{t.description}</td><td className="p-2 text-sm text-left font-mono">{t.debit > 0 ? t.debit.toFixed(2) : '-'}</td><td className="p-2 text-sm text-left font-mono text-green-600">{t.credit > 0 ? t.credit.toFixed(2) : '-'}</td><td className="p-2 text-sm text-left font-mono font-semibold">{t.balance.toFixed(2)}</td></tr>))}</tbody></table></div></div><div className="flex justify-start space-x-4 space-x-reverse p-4 bg-gray-50 dark:bg-gray-800/50 border-t dark:border-gray-700 rounded-b-lg print-hidden"><button onClick={() => window.print()} className="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-md"><PrintIcon/><span className="mr-2">{AR_LABELS.printReceipt}</span></button><button onClick={onClose} className="px-4 py-2 bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-md">{AR_LABELS.cancel}</button></div></div></div>);
+    return (<div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4" onClick={onClose}><div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-3xl text-right" onClick={e => e.stopPropagation()}><div id="printable-receipt" className="p-6">
+        <div className="flex justify-between items-start pb-4 border-b dark:border-gray-700">
+            <div>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{AR_LABELS.supplierStatement}</h2>
+                <p className="text-lg text-gray-700 dark:text-gray-300">{summary.supplierName}</p>
+            </div>
+            <div className="text-left text-sm">
+                <p><strong>{AR_LABELS.totalPurchases}:</strong> {summary.totalPurchases.toFixed(2)}</p>
+                <p><strong>{AR_LABELS.supplierTotalPaid}:</strong> {summary.totalPaid.toFixed(2)}</p>
+                <p className="font-bold text-lg">{AR_LABELS.balance}: <span className={summary.balance > 0 ? 'text-red-600' : 'text-green-600'}>{summary.balance.toFixed(2)}</span></p>
+            </div>
+        </div>
+        <div className="mt-4 max-h-96 overflow-y-auto">
+            <table className="min-w-full">
+                <thead className="bg-gray-50 dark:bg-gray-700/50 sticky top-0">
+                    <tr>
+                        <th className="p-2 text-xs font-medium uppercase text-right">{AR_LABELS.date}</th>
+                        <th className="p-2 text-xs font-medium uppercase text-right">{AR_LABELS.description}</th>
+                        <th className="p-2 text-xs font-medium uppercase text-left">{AR_LABELS.debit}</th>
+                        <th className="p-2 text-xs font-medium uppercase text-left">{AR_LABELS.creditTerm}</th>
+                        <th className="p-2 text-xs font-medium uppercase text-left">{AR_LABELS.balance}</th>
+                    </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                    {transactions.map((t, i) => (
+                        <tr key={i}>
+                            <td className="p-2 text-sm">{new Date(t.date).toLocaleDateString('ar-SA')}</td>
+                            <td className="p-2 text-sm">{t.description}</td>
+                            <td className="p-2 text-sm text-left font-mono">{t.debit > 0 ? t.debit.toFixed(2) : '-'}</td>
+                            <td className="p-2 text-sm text-left font-mono text-green-600">{t.credit > 0 ? t.credit.toFixed(2) : '-'}</td>
+                            <td className="p-2 text-sm text-left font-mono font-semibold">{t.balance.toFixed(2)}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    </div><div className="flex justify-start space-x-4 space-x-reverse p-4 bg-gray-50 dark:bg-gray-800/50 border-t dark:border-gray-700 rounded-b-lg print-hidden"><button onClick={() => window.print()} className="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-md"><PrintIcon/><span className="mr-2">{AR_LABELS.printReceipt}</span></button><button onClick={onClose} className="px-4 py-2 bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-md">{AR_LABELS.cancel}</button></div></div></div>);
 };
 
-// --- VIEW COMPONENTS ---
-const TabButton: React.FC<{ label: string, isActive: boolean, onClick: () => void }> = ({ label, isActive, onClick }) => (<button onClick={onClick} className={`px-4 py-2 text-sm font-medium rounded-md ${isActive ? 'bg-orange-500 text-white' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}`}>{label}</button>);
+// FIX: Added the main component and default export to fix the error.
+const PurchasesPage: React.FC = () => {
+    const [purchases, setPurchases] = useState<PurchaseOrder[]>(createInitialPurchases());
+    const [suppliers, setSuppliers] = useState<Supplier[]>(MOCK_SUPPLIERS_DATA);
+    const [products, setProducts] = useState<Product[]>(MOCK_PRODUCTS);
+    const [payments, setPayments] = useState<SupplierPayment[]>(MOCK_PAYMENTS_DATA);
+    const [activeTab, setActiveTab] = useState('orders');
+    const [purchaseModal, setPurchaseModal] = useState<{isOpen: boolean, data: PurchaseOrder | null}>({isOpen: false, data: null});
+    const [supplierModalOpen, setSupplierModalOpen] = useState(false);
+    const [paymentModalTarget, setPaymentModalTarget] = useState<PaymentTarget>(null);
+    const [statementModalTarget, setStatementModalTarget] = useState<SupplierAccountSummary | null>(null);
 
-const PurchaseOrdersView: React.FC<{ purchases: PurchaseOrder[]; suppliers: Supplier[]; onAdd: () => void; onEdit: (p: PurchaseOrder) => void; onDelete: (id: string) => void; onStatusChange: (id: string, status: PurchaseStatus) => void; }> = ({ purchases, suppliers, onAdd, onEdit, onDelete, onStatusChange }) => {
-    const [searchTerm, setSearchTerm] = useState('');
-    const [filteredSupplierId, setFilteredSupplierId] = useState('all');
-    const filteredPurchases = useMemo(() => {
-        return purchases.filter(p => {
-            const lowerSearch = searchTerm.toLowerCase();
-            const matchesSearch = searchTerm ? p.id.toLowerCase().includes(lowerSearch) || p.supplierName.toLowerCase().includes(lowerSearch) : true;
-            const matchesSupplier = filteredSupplierId !== 'all' ? p.supplierId === filteredSupplierId : true;
-            return matchesSearch && matchesSupplier;
-        }).sort((a, b) => new Date(b.purchaseDate).getTime() - new Date(a.purchaseDate).getTime());
-    }, [purchases, searchTerm, filteredSupplierId]);
+    const handleSavePurchase = (purchase: PurchaseOrder) => {
+        setPurchases(prev => {
+            const exists = prev.some(p => p.id === purchase.id);
+            if (exists) {
+                return prev.map(p => p.id === purchase.id ? purchase : p);
+            }
+            return [purchase, ...prev];
+        });
+        setPurchaseModal({isOpen: false, data: null});
+    };
+    
+    const handleSaveSupplier = (supplier: Supplier) => {
+        setSuppliers(prev => [supplier, ...prev]);
+        setSupplierModalOpen(false);
+    };
+
+    const handleSavePayment = (payment: SupplierPayment) => {
+        setPayments(prev => [payment, ...prev]);
+        setPaymentModalTarget(null);
+    };
 
     return (
-        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-center">
-                <div className="relative lg:col-span-2"><input type="text" placeholder={AR_LABELS.searchByPOorSupplier} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="w-full pl-3 pr-10 py-2 rounded-md border text-right"/><SearchIcon className="absolute top-1/2 left-3 -translate-y-1/2 h-5 w-5 text-gray-400" /></div>
-                <select value={filteredSupplierId} onChange={e => setFilteredSupplierId(e.target.value)} className="w-full border-gray-300 dark:border-gray-600 rounded-md text-right"><option value="all">{AR_LABELS.allSuppliers}</option>{suppliers.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}</select>
-                <button onClick={onAdd} className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-md shadow-sm text-white bg-orange-500 hover:bg-orange-600"><PlusIcon className="h-4 w-4 ml-2" /><span>{AR_LABELS.addNewPurchase}</span></button>
+        <div className="space-y-6">
+             <div>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{AR_LABELS.purchaseManagement}</h1>
+                <p className="text-gray-600 dark:text-gray-400">{AR_LABELS.purchaseManagementDescription}</p>
             </div>
-            <div className="overflow-x-auto"><table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-right"><thead className="bg-gray-50 dark:bg-gray-700/50"><tr><th className="px-6 py-3 text-xs font-medium uppercase">{AR_LABELS.poNumber}</th><th className="px-6 py-3 text-xs font-medium uppercase">{AR_LABELS.supplier}</th><th className="px-6 py-3 text-xs font-medium uppercase">{AR_LABELS.totalAmount}</th><th className="px-6 py-3 text-xs font-medium uppercase">{AR_LABELS.paymentMethod}</th><th className="px-6 py-3 text-xs font-medium uppercase">{AR_LABELS.date}</th><th className="px-6 py-3 text-xs font-medium uppercase">{AR_LABELS.status}</th><th className="px-6 py-3 text-xs font-medium uppercase text-center">{AR_LABELS.actions}</th></tr></thead><tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">{filteredPurchases.map(p => (<tr key={p.id}><td className="px-6 py-4 whitespace-nowrap text-sm font-mono text-blue-600 dark:text-blue-400">{p.id}</td><td className="px-6 py-4 whitespace-nowrap text-sm font-medium">{p.supplierName}</td><td className="px-6 py-4 whitespace-nowrap text-sm font-semibold">{p.totalAmount.toLocaleString('ar-SA', {style: 'currency', currency: 'SAR'})}</td><td className="px-6 py-4 whitespace-nowrap text-sm">{PAYMENT_METHOD_LABELS[p.paymentMethod]}</td><td className="px-6 py-4 whitespace-nowrap text-sm">{new Date(p.purchaseDate).toLocaleDateString('ar-SA')}</td><td className="px-6 py-4 whitespace-nowrap text-sm"><select value={p.status} onChange={e => onStatusChange(p.id, e.target.value as PurchaseStatus)} className={`border-none rounded-md text-xs font-semibold ${STATUS_STYLES[p.status]}`}><option value="Pending">{AR_LABELS.pending}</option><option value="Completed">{AR_LABELS.completed}</option><option value="Cancelled">{AR_LABELS.cancelled}</option></select></td><td className="px-6 py-4 whitespace-nowrap text-center text-sm"><button onClick={() => onEdit(p)} className="text-indigo-600 hover:text-indigo-900 p-1 ml-2" title={AR_LABELS.edit}><EditIcon/></button><button onClick={() => onDelete(p.id)} className="text-red-600 hover:text-red-900 p-1" title={AR_LABELS.delete}><DeleteIcon/></button></td></tr>))}</tbody></table></div>
+            {/* Tabs can be added here if needed */}
+             <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
+                <PurchaseOrdersView 
+                    purchases={purchases} 
+                    onAdd={() => setPurchaseModal({isOpen: true, data: null})} 
+                    onEdit={(p) => setPurchaseModal({isOpen: true, data: p})} 
+                />
+            </div>
+            
+            <PurchaseFormModal 
+                isOpen={purchaseModal.isOpen}
+                onClose={() => setPurchaseModal({isOpen: false, data: null})}
+                onSave={handleSavePurchase}
+                purchaseToEdit={purchaseModal.data}
+                suppliers={suppliers}
+                products={products}
+                setProducts={setProducts}
+                onAddNewSupplier={() => setSupplierModalOpen(true)}
+            />
+            <SupplierFormModal
+                isOpen={supplierModalOpen}
+                onClose={() => setSupplierModalOpen(false)}
+                onSave={handleSaveSupplier}
+            />
+             <AddPaymentModal 
+                isOpen={!!paymentModalTarget}
+                onClose={() => setPaymentModalTarget(null)}
+                onSave={handleSavePayment}
+                target={paymentModalTarget}
+            />
+            <SupplierStatementModal
+                summary={statementModalTarget}
+                purchases={purchases}
+                payments={payments}
+                onClose={() => setStatementModalTarget(null)}
+            />
         </div>
     );
 };
 
-const SupplierAccountsView: React.FC<{ suppliers: Supplier[]; purchases: PurchaseOrder[]; payments: SupplierPayment[]; onAddPayment: (summary: SupplierAccountSummary) => void; onViewDetails: (summary: SupplierAccountSummary) => void; }> = ({ suppliers, purchases, payments, onAddPayment, onViewDetails }) => {
+const PurchaseOrdersView: React.FC<{
+    purchases: PurchaseOrder[];
+    onAdd: () => void;
+    onEdit: (p: PurchaseOrder) => void;
+}> = ({ purchases, onAdd, onEdit }) => {
     const [searchTerm, setSearchTerm] = useState('');
-    const supplierSummaries = useMemo<SupplierAccountSummary[]>(() => {
-        return suppliers.map(supplier => {
-            const supplierPurchases = purchases.filter(p => p.supplierId === supplier.id);
-            const supplierPayments = payments.filter(p => p.supplierId === supplier.id);
-            const totalPurchases = supplierPurchases.reduce((sum, p) => sum + p.totalAmount, 0);
-            const totalPaid = supplierPayments.reduce((sum, p) => sum + p.amount, 0);
-            const lastPayment = supplierPayments.sort((a,b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0];
-            return { supplierId: supplier.id, supplierName: supplier.name, totalPurchases, totalPaid, balance: totalPurchases - totalPaid, lastPaymentDate: lastPayment ? new Date(lastPayment.date).toLocaleDateString('ar-SA') : null };
-        });
-    }, [suppliers, purchases, payments]);
+    const [filters, setFilters] = useState({ status: 'all', supplierId: 'all' });
 
-    const filteredSummaries = useMemo(() => {
-        return supplierSummaries.filter(c => {
-            const supplierDetails = suppliers.find(s => s.id === c.supplierId);
-            return searchTerm ? c.supplierName.toLowerCase().includes(searchTerm.toLowerCase()) || supplierDetails?.phone.includes(searchTerm) : true;
-        });
-    }, [supplierSummaries, searchTerm, suppliers]);
-    return (<div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm space-y-4"><div className="relative w-full md:w-1/2"><input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} placeholder={AR_LABELS.searchBySupplierNameOrPhone} className="w-full pl-3 pr-10 py-2 rounded-md border text-right"/><SearchIcon className="absolute top-1/2 left-3 -translate-y-1/2 h-5 w-5 text-gray-400" /></div><div className="overflow-x-auto"><table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-right"><thead className="bg-gray-50 dark:bg-gray-700/50"><tr><th className="px-4 py-2 text-xs font-medium uppercase">{AR_LABELS.supplierName}</th><th className="px-4 py-2 text-xs font-medium uppercase">{AR_LABELS.totalPurchases}</th><th className="px-4 py-2 text-xs font-medium uppercase">{AR_LABELS.supplierTotalPaid}</th><th className="px-4 py-2 text-xs font-medium uppercase">{AR_LABELS.balance}</th><th className="px-4 py-2 text-xs font-medium uppercase">{AR_LABELS.lastPayment}</th><th className="px-4 py-2 text-xs font-medium uppercase text-center">{AR_LABELS.actions}</th></tr></thead><tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">{filteredSummaries.map(c => (<tr key={c.supplierId} className="hover:bg-gray-50 dark:hover:bg-gray-700/50"><td className="px-4 py-2 whitespace-nowrap text-sm font-medium">{c.supplierName}</td><td className="px-4 py-2 whitespace-nowrap text-sm">{c.totalPurchases.toFixed(2)}</td><td className="px-4 py-2 whitespace-nowrap text-sm text-green-600">{c.totalPaid.toFixed(2)}</td><td className="px-4 py-2 whitespace-nowrap text-sm font-bold text-red-600">{c.balance.toFixed(2)}</td><td className="px-4 py-2 whitespace-nowrap text-sm">{c.lastPaymentDate || 'N/A'}</td><td className="px-4 py-2 whitespace-nowrap text-center text-sm"><button onClick={() => onAddPayment(c)} className="p-1 ml-2 text-green-600" title={AR_LABELS.addPayment}><AddPaymentIcon/></button><button onClick={() => onViewDetails(c)} className="p-1 ml-2 text-blue-600" title={AR_LABELS.viewDetails}><ViewIcon/></button></td></tr>))}</tbody></table></div></div>);
-}
-
-const PurchaseReportsView: React.FC<{ purchases: PurchaseOrder[] }> = ({ purchases }) => {
-    const [reportType, setReportType] = useState('total');
-    const [reportData, setReportData] = useState<any[] | null>(null);
-    const [reportHeaders, setReportHeaders] = useState<string[]>([]);
-    const handleGenerateReport = () => { let data: any[] = []; let headers: string[] = [];
-        switch(reportType) {
-            case 'total': headers = ['المؤشر', 'القيمة']; const total = purchases.reduce((sum, p) => sum + p.totalAmount, 0); data = [{'المؤشر': AR_LABELS.totalPurchases, 'القيمة': total.toFixed(2)}, {'المؤشر': AR_LABELS.itemsCount, 'القيمة': purchases.length}]; break;
-            // FIX: Typed the accumulator for `reduce` to fix 'unknown' type errors on `s` in the following `map`. Also, changed `AR_LABELS.supplierName` to `AR_LABELS.supplier`.
-            case 'supplier':
-                // FIX: Property 'supplierName' does not exist on type '{ dashboard: string;...'. Did you mean 'supplier'?
-                headers = [AR_LABELS.supplier, AR_LABELS.itemsCount, AR_LABELS.totalPurchases];
-                const bySupplier = purchases.reduce((acc, p) => {
-                    if (!acc[p.supplierId]) {
-                        acc[p.supplierId] = { name: p.supplierName, count: 0, total: 0 };
-                    }
-                    acc[p.supplierId].count++;
-                    acc[p.supplierId].total += p.totalAmount;
-                    return acc;
-                // FIX: Add type assertion to the accumulator.
-                }, {} as Record<string, { name: string; count: number; total: number }>);
-                data = Object.values(bySupplier).map(s => ({
-                    // FIX: Property 'name' does not exist on type 'unknown'.
-                    [AR_LABELS.supplier]: s.name,
-                    // FIX: Property 'count' does not exist on type 'unknown'.
-                    [AR_LABELS.itemsCount]: s.count,
-                    // FIX: Property 'total' does not exist on type 'unknown'.
-                    [AR_LABELS.totalPurchases]: s.total.toFixed(2)
-                }));
-                break;
-        } setReportHeaders(headers); setReportData(data);
-    };
-    return (<div className="space-y-4"><div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end p-4 border dark:border-gray-700 rounded-lg"><div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{AR_LABELS.reportType}</label><select value={reportType} onChange={(e) => setReportType(e.target.value)} className="w-full p-2 border rounded-md text-right"><option value="total">{AR_LABELS.totalPurchaseReport}</option><option value="supplier">{AR_LABELS.purchaseReportBySupplier}</option></select></div><button onClick={handleGenerateReport} className="w-full px-4 py-2 bg-orange-500 text-white rounded-md">{AR_LABELS.generateReport}</button></div>{reportData && (<div className="p-4 border dark:border-gray-700 rounded-lg"><div className="flex justify-end gap-2 mb-4"><button className="inline-flex items-center px-3 py-1.5 text-sm bg-gray-200 dark:bg-gray-600 rounded-md"><ExportIcon className="w-4 h-4 ml-1" />{AR_LABELS.exportExcel}</button></div><div className="overflow-x-auto"><table className="min-w-full text-right"><thead className="bg-gray-50 dark:bg-gray-700/50"><tr>{reportHeaders.map(h => <th key={h} className="px-4 py-2 text-xs font-medium uppercase">{h}</th>)}</tr></thead><tbody className="divide-y divide-gray-200 dark:divide-gray-700">{reportData.map((row, i) => (<tr key={i}>{reportHeaders.map(h => <td key={h} className="px-4 py-2 text-sm">{row[h]}</td>)}</tr>))}</tbody></table></div></div>)}</div>);
-};
-
-// --- MAIN PAGE COMPONENT ---
-const PurchasesPage: React.FC = () => {
-    const [activeTab, setActiveTab] = useState('orders');
-    const [purchases, setPurchases] = useState<PurchaseOrder[]>(createInitialPurchases());
-    const [suppliers, setSuppliers] = useState<Supplier[]>(MOCK_SUPPLIERS_DATA);
-    const [payments, setPayments] = useState<SupplierPayment[]>(MOCK_PAYMENTS_DATA);
-    const [products, setProducts] = useState<Product[]>(MOCK_PRODUCTS);
-    
-    const [purchaseModal, setPurchaseModal] = useState<{ type: 'add' | 'edit' | null; data: PurchaseOrder | null }>({ type: null, data: null });
-    const [isSupplierModalOpen, setIsSupplierModalOpen] = useState(false);
-    const [paymentModalTarget, setPaymentModalTarget] = useState<PaymentTarget>(null);
-    const [statementModalTarget, setStatementModalTarget] = useState<SupplierAccountSummary | null>(null);
-
-    const summaryMetrics = useMemo(() => {
-        const totalPurchases = purchases.reduce((sum, p) => sum + p.totalAmount, 0);
-        const totalPaid = payments.reduce((sum, p) => sum + p.amount, 0);
-        return { totalPurchases, totalPaid, totalDue: totalPurchases - totalPaid };
-    }, [purchases, payments]);
-
-    const handleSavePurchase = (purchaseData: PurchaseOrder) => { setPurchases(prev => { const exists = prev.some(p => p.id === purchaseData.id); if(exists) { return prev.map(p => p.id === purchaseData.id ? purchaseData : p); } return [purchaseData, ...prev]; }); setPurchaseModal({ type: null, data: null }); };
-    const handleSaveSupplier = (newSupplier: Supplier) => { setSuppliers(prev => [newSupplier, ...prev]); setIsSupplierModalOpen(false); }
-    const handleSavePayment = (payment: SupplierPayment) => { setPayments(prev => [payment, ...prev]); setPaymentModalTarget(null); };
-    const handleDeletePurchase = (id: string) => { if (window.confirm('هل أنت متأكد؟')) { setPurchases(prev => prev.filter(p => p.id !== id)); } };
-    const handleStatusChange = (id: string, status: PurchaseStatus) => { setPurchases(prev => prev.map(p => p.id === id ? {...p, status} : p)); };
-    const handleAddPayment = (summary: SupplierAccountSummary) => { const supplier = suppliers.find(s => s.id === summary.supplierId); if (supplier) setPaymentModalTarget({ supplier, defaultAmount: summary.balance > 0 ? summary.balance : 0 }); };
+    const filteredPurchases = useMemo(() => {
+        return purchases.filter(p => {
+            const matchesSearch = searchTerm ? p.id.toLowerCase().includes(searchTerm.toLowerCase()) || p.supplierName.toLowerCase().includes(searchTerm.toLowerCase()) : true;
+            const matchesStatus = filters.status !== 'all' ? p.status === filters.status : true;
+            return matchesSearch && matchesStatus;
+        }).sort((a,b) => new Date(b.purchaseDate).getTime() - new Date(a.purchaseDate).getTime());
+    }, [purchases, searchTerm, filters]);
 
     return (
-        <div className="space-y-6">
-            <div><h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{AR_LABELS.purchaseManagement}</h1><p className="text-gray-600 dark:text-gray-400">{AR_LABELS.purchaseManagementDescription}</p></div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <MetricCard id={1} title={AR_LABELS.totalPurchases} value={summaryMetrics.totalPurchases.toLocaleString('ar-SA', {style: 'currency', currency: 'SAR'})} icon={<div/>} bgColor="bg-blue-100" valueColor="text-blue-600" />
-                <MetricCard id={2} title={AR_LABELS.supplierTotalPaid} value={summaryMetrics.totalPaid.toLocaleString('ar-SA', {style: 'currency', currency: 'SAR'})} icon={<div/>} bgColor="bg-green-100" valueColor="text-green-600" />
-                <MetricCard id={3} title={AR_LABELS.totalDue} value={summaryMetrics.totalDue.toLocaleString('ar-SA', {style: 'currency', currency: 'SAR'})} icon={<div/>} bgColor="bg-red-100" valueColor="text-red-600" />
+        <div className="space-y-4">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div className="relative w-full md:w-1/2">
+                    <input type="text" placeholder={AR_LABELS.searchByPOorSupplier} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="w-full pl-3 pr-10 py-2 rounded-md border text-right"/>
+                    <SearchIcon className="absolute top-1/2 left-3 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                </div>
+                <div className="flex items-center gap-2">
+                    <select value={filters.status} onChange={e => setFilters(f => ({...f, status: e.target.value}))} className="p-2 border rounded-md text-right">
+                        <option value="all">كل الحالات</option>
+                        {Object.keys(STATUS_LABELS).map(s => <option key={s} value={s}>{STATUS_LABELS[s as PurchaseStatus]}</option>)}
+                    </select>
+                    <button onClick={onAdd} className="inline-flex items-center px-4 py-2 text-sm font-medium rounded-md shadow-sm text-white bg-orange-500 hover:bg-orange-600">
+                        <PlusIcon className="h-4 w-4 ml-2" /><span>{AR_LABELS.addNewPurchase}</span>
+                    </button>
+                </div>
             </div>
-
-            <div className="bg-white dark:bg-gray-800 p-2 rounded-lg shadow-sm"><nav className="flex space-x-2 space-x-reverse"><TabButton label={AR_LABELS.purchaseOrders} isActive={activeTab === 'orders'} onClick={() => setActiveTab('orders')} /><TabButton label={AR_LABELS.supplierAccounts} isActive={activeTab === 'accounts'} onClick={() => setActiveTab('accounts')} /><TabButton label={AR_LABELS.purchaseReports} isActive={activeTab === 'reports'} onClick={() => setActiveTab('reports')} /></nav></div>
-            
-            {activeTab === 'orders' && <PurchaseOrdersView purchases={purchases} suppliers={suppliers} onAdd={() => setPurchaseModal({ type: 'add', data: null })} onEdit={(p) => setPurchaseModal({ type: 'edit', data: p })} onDelete={handleDeletePurchase} onStatusChange={handleStatusChange} />}
-            {activeTab === 'accounts' && <SupplierAccountsView suppliers={suppliers} purchases={purchases} payments={payments} onAddPayment={handleAddPayment} onViewDetails={setStatementModalTarget} />}
-            {activeTab === 'reports' && <PurchaseReportsView purchases={purchases} />}
-
-            <PurchaseFormModal isOpen={!!purchaseModal.type} onClose={() => setPurchaseModal({type: null, data: null})} onSave={handleSavePurchase} purchaseToEdit={purchaseModal.data} suppliers={suppliers} products={products} setProducts={setProducts} onAddNewSupplier={() => setIsSupplierModalOpen(true)} />
-            <SupplierFormModal isOpen={isSupplierModalOpen} onClose={() => setIsSupplierModalOpen(false)} onSave={handleSaveSupplier} />
-            <AddPaymentModal isOpen={!!paymentModalTarget} onClose={() => setPaymentModalTarget(null)} onSave={handleSavePayment} target={paymentModalTarget} />
-            <SupplierStatementModal summary={statementModalTarget} purchases={purchases} payments={payments} onClose={() => setStatementModalTarget(null)} />
+             <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-right">
+                    <thead className="bg-gray-50 dark:bg-gray-700/50">
+                        <tr>
+                            <th className="px-4 py-2 text-xs font-medium uppercase">{AR_LABELS.poNumber}</th>
+                            <th className="px-4 py-2 text-xs font-medium uppercase">{AR_LABELS.purchaseDate}</th>
+                            <th className="px-4 py-2 text-xs font-medium uppercase">{AR_LABELS.supplier}</th>
+                            <th className="px-4 py-2 text-xs font-medium uppercase">{AR_LABELS.totalAmount}</th>
+                            <th className="px-4 py-2 text-xs font-medium uppercase">{AR_LABELS.paymentMethod}</th>
+                            <th className="px-4 py-2 text-xs font-medium uppercase">{AR_LABELS.status}</th>
+                            <th className="px-4 py-2 text-xs font-medium uppercase text-center">{AR_LABELS.actions}</th>
+                        </tr>
+                    </thead>
+                    <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                        {filteredPurchases.map(p => (
+                            <tr key={p.id}>
+                                <td className="px-4 py-2 text-sm font-mono text-blue-600 dark:text-blue-400">{p.id}</td>
+                                <td className="px-4 py-2 text-sm">{new Date(p.purchaseDate).toLocaleDateString('ar-SA')}</td>
+                                <td className="px-4 py-2 text-sm font-medium">{p.supplierName}</td>
+                                <td className="px-4 py-2 text-sm font-semibold">{p.totalAmount.toFixed(2)}</td>
+                                <td className="px-4 py-2 text-sm">{PAYMENT_METHOD_LABELS[p.paymentMethod]}</td>
+                                <td className="px-4 py-2 text-sm"><span className={`px-2 py-1 text-xs font-semibold rounded-full ${STATUS_STYLES[p.status]}`}>{STATUS_LABELS[p.status]}</span></td>
+                                <td className="px-4 py-2 text-center text-sm">
+                                    <button onClick={() => alert('View details for ' + p.id)} title={AR_LABELS.viewDetails} className="p-1 ml-2 text-blue-600"><ViewIcon/></button>
+                                    <button onClick={() => onEdit(p)} title={AR_LABELS.edit} className="p-1 ml-2 text-indigo-600"><EditIcon/></button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };

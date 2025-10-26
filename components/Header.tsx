@@ -1,6 +1,7 @@
 import React from 'react';
 import { AR_LABELS, SunIcon, MoonIcon } from '../constants'; // TOP_NAV_ITEMS is no longer used here
-import { Theme } from '../App';
+// FIX: Changed import to `types.ts` to resolve circular dependency.
+import { Theme } from '../types';
 
 interface HeaderProps {
   activePath: string;

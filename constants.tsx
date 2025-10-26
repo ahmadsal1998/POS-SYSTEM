@@ -17,6 +17,7 @@ export const AR_LABELS = {
   addMenus: 'إضافة قوائم',
   manageFoodBeverages: 'إدارة قوائم الطعام والمشروبات الخاصة بك',
   madeWithLove: 'صنع بحب ❤️ بواسطة نافين',
+  back: 'رجوع',
   // Added missing labels for ProfileBanner, ProfileCard, and AccountSettingsForm
   healthyFood: 'طعام صحي',
   followMe: 'تابعني على',
@@ -37,6 +38,29 @@ export const AR_LABELS = {
   phone: 'الهاتف',
   city: 'المدينة',
   country: 'البلد',
+
+  // --- NEW AUTH LABELS ---
+  login: 'تسجيل الدخول',
+  emailOrUsername: 'البريد الإلكتروني أو اسم المستخدم',
+  password: 'كلمة المرور',
+  forgotPassword: 'هل نسيت كلمة المرور؟',
+  invalidCredentials: 'البريد الإلكتروني/اسم المستخدم أو كلمة المرور غير صالحة',
+  sendVerificationCode: 'إرسال رمز التحقق',
+  email: 'البريد الإلكتروني',
+  emailNotRegistered: 'البريد الإلكتروني غير مسجل',
+  backToLogin: 'العودة إلى تسجيل الدخول',
+  enterVerificationCode: 'أدخل رمز التحقق',
+  verificationCodeSent: 'تم إرسال رمز مكون من 6 أرقام إلى بريدك الإلكتروني.',
+  verificationCode: 'رمز التحقق',
+  verifyCode: 'التحقق من الرمز',
+  invalidCode: 'الرمز غير صالح',
+  resetPassword: 'إعادة تعيين كلمة المرور',
+  newPassword: 'كلمة المرور الجديدة',
+  confirmPassword: 'تأكيد كلمة المرور',
+  updatePassword: 'تحديث كلمة المرور',
+  passwordsDoNotMatch: 'كلمتا المرور غير متطابقتين',
+  passwordTooShort: 'يجب أن تتكون كلمة المرور من 8 أحرف على الأقل',
+  passwordUpdatedSuccess: 'تم تحديث كلمة المرور بنجاح!',
 
 
   // Dashboard specific
@@ -253,6 +277,15 @@ export const AR_LABELS = {
   noItemsInCart: 'لا توجد أصناف في السلة.',
   selectRegisteredCustomerForCredit: 'للمبيعات الآجلة, يرجى اختيار عميل مسجل.',
   autoPrintInvoice: 'طباعة الفاتورة تلقائياً',
+  returnProduct: 'إرجاع منتج',
+  returnInvoice: 'فاتورة إرجاع',
+  searchInvoicePlaceholder: 'ابحث برقم الفاتورة أو اسم العميل...',
+  productsToReturn: 'المنتجات المراد إرجاعها',
+  returnQuantity: 'كمية الإرجاع',
+  totalReturnValue: 'إجمالي قيمة الإرجاع',
+  confirmReturn: 'تأكيد الإرجاع',
+  returnCompleted: 'تم الإرجاع بنجاح!',
+  originalQuantity: 'الكمية الأصلية',
   
   // Wholesale POS Page Specific
   wholesalePOS: 'نقطة بيع الجملة',
@@ -367,10 +400,10 @@ export const AR_LABELS = {
   permissions: 'صلاحيات الوصول',
   lastLogin: 'آخر تسجيل دخول',
   userDetails: 'تفاصيل المستخدم',
-  password: 'كلمة المرور',
-  confirmPassword: 'تأكيد كلمة المرور',
+  // password: 'كلمة المرور', // DUPLICATE
+  // confirmPassword: 'تأكيد كلمة المرور', // DUPLICATE
   screenAccessPermissions: 'صلاحيات الوصول للشاشات',
-  resetPassword: 'إعادة تعيين كلمة المرور',
+  // resetPassword: 'إعادة تعيين كلمة المرور', // DUPLICATE
   
   // Screen Permissions
   permissionDashboard: 'لوحة القيادة',
@@ -424,7 +457,7 @@ export const AR_LABELS = {
   paymentDate: 'تاريخ الدفعة',
   supplierDetails: 'تفاصيل المورد',
   contactPerson: 'الشخص المسؤول',
-  email: 'البريد الإلكتروني',
+  // email: 'البريد الإلكتروني', // DUPLICATE
   filterBySupplier: 'تصفية حسب المورد',
   allSuppliers: 'كل الموردين',
   totalPurchases: 'إجمالي المشتريات',
@@ -568,6 +601,7 @@ const PlusIcon = ({ className, ...props }: IconProps) => <svg className={classNa
 const MinusIcon = () => <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 12H4"/></svg>;
 const PrintIcon = () => <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>;
 const ViewIcon = () => <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>;
+const ReturnIcon = ({ className, ...props }: IconProps) => <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" {...props}><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 15l-3-3m0 0l3-3m-3 3h12a6 6 0 000-12h-3"/></svg>;
 
 const ImportIcon = () => <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>;
 const ExportIcon = () => <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l4 4m0 0l-4 4m4-4H4"/></svg>;
@@ -607,6 +641,25 @@ const XIcon = ({ className, ...props }: IconProps) => (
 const CheckCircleIcon = ({ className, ...props }: IconProps) => (
   <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" {...props}>
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+);
+
+// --- NEW AUTH ICONS ---
+const MailIcon = (props: IconProps) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+    </svg>
+);
+
+const LockIcon = (props: IconProps) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 00-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+    </svg>
+);
+
+const UserIcon = (props: IconProps) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
   </svg>
 );
 
@@ -715,4 +768,4 @@ export const ToggleSwitch: React.FC<{
 };
 
 
-export { ChevronDownIcon, AddProductIcon, EditIcon, DeleteIcon, CancelIcon, GenerateBarcodeIcon, PlusIcon, MinusIcon, PrintIcon, ViewIcon, SearchIcon, ImportIcon, ExportIcon, GridViewIcon, TableViewIcon, CashIcon, CreditCardIcon, HandIcon, MenuIcon, XIcon, UsersIcon, PurchasesIcon, ExpensesIcon, ChequesIcon, SunIcon, MoonIcon, AddPaymentIcon, ClockIcon, CheckCircleIcon };
+export { ChevronDownIcon, AddProductIcon, EditIcon, DeleteIcon, CancelIcon, GenerateBarcodeIcon, PlusIcon, MinusIcon, PrintIcon, ViewIcon, SearchIcon, ImportIcon, ExportIcon, GridViewIcon, TableViewIcon, CashIcon, CreditCardIcon, HandIcon, MenuIcon, XIcon, UsersIcon, PurchasesIcon, ExpensesIcon, ChequesIcon, SunIcon, MoonIcon, AddPaymentIcon, ClockIcon, CheckCircleIcon, ReturnIcon, MailIcon, LockIcon, UserIcon };
